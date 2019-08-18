@@ -11,4 +11,6 @@ public interface ArticleRepository extends CrudRepository<Article, Long> {
     List<Article> findByArticleId(long article_id);
 
     List<Article> findByLocationId(long loacation_id);
+
+    List<Article> findByCustomerId(long customer_id);
 }

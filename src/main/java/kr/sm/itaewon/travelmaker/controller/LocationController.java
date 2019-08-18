@@ -22,7 +22,12 @@ public class LocationController {
     @Autowired
     private LocationRepository repository;
 
-    @GetMapping("/getAll")
+    @RequestMapping("/")
+    public ResponseEntity<Void> badRequest(){
+        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/getLocationAll")
     public ResponseEntity<List<Location>> getLocationAll(){
 
         List<Location> list = new ArrayList<>();

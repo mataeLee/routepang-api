@@ -27,8 +27,8 @@ public class Article{
     private long locationId;
 
     @NotNull
-    @Column(name="user_id")
-    private long userId;
+    @Column(name="customer_id")
+    private long customerId;
 
     @Column(name="image")
     private String image;

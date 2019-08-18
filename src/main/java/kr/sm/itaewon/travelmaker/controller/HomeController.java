@@ -13,12 +13,6 @@ public class HomeController {
     public String home(Model model){
         System.out.println("home req");
         model.addAttribute("msg", "hello world");
-        return "index";
-    }
-
-    @RequestMapping("/hello")
-    public String hello(Model model){
-        System.out.println("hello req");
-        return "hello";
+        return "home";
     }
 }

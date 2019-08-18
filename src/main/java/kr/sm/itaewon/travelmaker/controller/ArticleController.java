@@ -24,9 +24,9 @@ public class ArticleController {
     @Autowired
     private BasketRepository basketRepository;
 
-    @GetMapping("/")
+    @RequestMapping("/")
     public ResponseEntity<Void> badRequest(){
-        return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }
 
 
@@ -72,6 +72,22 @@ public class ArticleController {
         }
     }
 
+    @GetMapping("/getArticleByCustomerId/{customer_id}")
+    public ResponseEntity<List<Article>> getArticleByCustomerId(@PathVariable long customer_id){
+
+        try {
+            List<Article> list = articleRepository.findByCustomerId(customer_id);
+
+            if(list == null){
+                return new ResponseEntity<List<Article>>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<List<Article>>(list, HttpStatus.OK);
+
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<List<Article>>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
     @GetMapping("/getArticleByLocationId/{location_id}")
     public ResponseEntity<List<Article>> getArticleByLocationId(@PathVariable long location_id){
 
@@ -121,18 +137,18 @@ public class ArticleController {
             return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-    @GetMapping("/getBasketListByCustomerId/{customer_id}")
-    public ResponseEntity<List<Basket>> getBasketListByCustomerId(@PathVariable long customer_id){
-
-        try{
-            List<Basket> list = basketRepository.findByCustomerId(customer_id);
-
-            return new ResponseEntity<List<Basket>>(list, HttpStatus.OK);
-        }catch (Exception e){
-            e.printStackTrace();
-            return new ResponseEntity<List<Basket>>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+//    CustomerController
+//    @GetMapping("/getBasketListByCustomerId/{customer_id}")
+//    public ResponseEntity<List<Basket>> getBasketListByCustomerId(@PathVariable long customer_id){
+//
+//        try{
+//            List<Basket> list = basketRepository.findByCustomerId(customer_id);
+//
+//            return new ResponseEntity<List<Basket>>(list, HttpStatus.OK);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            return new ResponseEntity<List<Basket>>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
 }

@@ -17,6 +17,10 @@ public class LinkController {
 
     private LinkManager linkManager = new LinkManager();
 
+    @RequestMapping("/")
+    public ResponseEntity<Void> badRequest(){
+        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+    }
 
     @PostMapping("/postLink")
     public ResponseEntity<Link> postLink(@RequestBody Link link){
