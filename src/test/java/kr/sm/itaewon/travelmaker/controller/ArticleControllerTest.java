@@ -26,7 +26,7 @@ public class ArticleControllerTest {
 
     @Test
     public void getArticleAll() throws Exception{
-        mockMvc.perform(get("/article/getAll")).andExpect(status().isOk());
+        mockMvc.perform(get("/article/getArticleAll")).andExpect(status().isOk());
 
     }
 
