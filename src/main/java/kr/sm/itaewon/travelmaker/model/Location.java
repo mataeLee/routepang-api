@@ -31,6 +31,7 @@ public class Location {
     @Column(columnDefinition="Geometry")
     private Point coordinates;
 
+
     @Column(name="place_id")
     private String placeId;
 

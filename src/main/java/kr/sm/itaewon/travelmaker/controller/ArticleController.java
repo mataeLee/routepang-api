@@ -1,7 +1,9 @@
 package kr.sm.itaewon.travelmaker.controller;
 
 import kr.sm.itaewon.travelmaker.model.Article;
+import kr.sm.itaewon.travelmaker.model.Basket;
 import kr.sm.itaewon.travelmaker.repo.ArticleRepository;
+import kr.sm.itaewon.travelmaker.repo.BasketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,56 +19,120 @@ import java.util.List;
 public class ArticleController {
 
     @Autowired
-    private ArticleRepository repository;
+    private ArticleRepository articleRepository;
 
-    @GetMapping("/getAll")
+    @Autowired
+    private BasketRepository basketRepository;
+
+    @GetMapping("/")
+    public ResponseEntity<Void> badRequest(){
+        return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+    }
+
+
+    ////////////Article
+
+    @GetMapping("/getArticleAll")
     public ResponseEntity<List<Article>> getArticleAll(){
 
-        List<Article> list = new ArrayList<>();
-        Iterable<Article> articles = repository.findAll();
+        try {
+            List<Article> list = new ArrayList<>();
+            Iterable<Article> articles = articleRepository.findAll();
 
-        articles.forEach(list::add);
+            articles.forEach(list::add);
 
-        return new ResponseEntity<List<Article>>(list, HttpStatus.OK);
+            if(list == null){
+                return new ResponseEntity<List<Article>>(HttpStatus.NO_CONTENT);
+            }
+
+            return new ResponseEntity<List<Article>>(list, HttpStatus.OK);
+
+        }catch (Exception e){
+
+            e.printStackTrace();
+            return new ResponseEntity<List<Article>>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        }
     }
 
     @GetMapping("/getArticleById/{article_id}")
     public ResponseEntity<List<Article>> getArticleById(@PathVariable long article_id){
 
-        List<Article> list = repository.findByArticleId(article_id);
+        try {
+            List<Article> list = articleRepository.findByArticleId(article_id);
 
-        return new ResponseEntity<List<Article>>(list, HttpStatus.OK);
+            if(list == null){
+                return new ResponseEntity<List<Article>>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<List<Article>>(list, HttpStatus.OK);
+
+        } catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<List<Article>>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/getArticleByLocationId/{location_id}")
     public ResponseEntity<List<Article>> getArticleByLocationId(@PathVariable long location_id){
 
-        List<Article> list = repository.findByLocationId(location_id);
-
-        return new ResponseEntity<List<Article>>(list, HttpStatus.OK);
+        try {
+            List<Article> list = articleRepository.findByLocationId(location_id);
+            return new ResponseEntity<List<Article>>(list, HttpStatus.OK);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<List<Article>>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    @GetMapping("/create")
-    public ResponseEntity<Void> postArticle(/*@RequestBody Article article*/){ // 나중에 파라미터로 받을 때 @RequestBody, @PostMapping 사용
-        Article article = new Article();
-//        Article model = article;
-        article.setLocationId(1);
-        article.setReg_date(new Timestamp(new Date().getTime()));
-        article.setLink("https://");
-        article.setSummary("");
-        article.setImage("hello.jpg");
-        article.setUserId(1);
-        repository.save(article);
+    @PostMapping("/postArticle/{customer_id}")
+    public ResponseEntity<Void> postArticle(@PathVariable long customer_id, @RequestBody Article article){
+        if(article == null){
+            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+        }
 
-        Object.class.hashCode();
+        try {
+            articleRepository.save(article);
+            return new ResponseEntity<Void>(HttpStatus.CREATED);
 
-        return new ResponseEntity<Void>(HttpStatus.CREATED);
+        }catch (Exception e){
+            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    @PostMapping("/addBasket/{user_id}")
-    public ResponseEntity<Void> addWishList(@RequestBody Article article, @PathVariable long user_id){
+
+    //////////Basket
+
+    @PostMapping("/addBasket/{customer_id}")
+    public ResponseEntity<Void> addBasket(@RequestBody Article article, @PathVariable long customer_id){
         //TODO add wishlist
+        if(article == null){
+            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+        }
+        try{
+            Basket basket = new Basket();
+            basket.setCustomerId(customer_id);
+            basket.setLocationId(article.getLocationId());
+            //basket.setRouteId();
+            basketRepository.save(basket);
+            return new ResponseEntity<Void>(HttpStatus.CREATED);
 
-        return new ResponseEntity<Void>(HttpStatus.CREATED);
+        }catch (Exception e){
+            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
+    @GetMapping("/getBasketListByCustomerId/{customer_id}")
+    public ResponseEntity<List<Basket>> getBasketListByCustomerId(@PathVariable long customer_id){
+
+        try{
+            List<Basket> list = basketRepository.findByCustomerId(customer_id);
+
+            return new ResponseEntity<List<Basket>>(list, HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<List<Basket>>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
