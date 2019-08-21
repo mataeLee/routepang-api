@@ -1,14 +1,13 @@
 package kr.sm.itaewon.travelmaker.controller;
 
+import kr.sm.itaewon.travelmaker.model.Article;
 import kr.sm.itaewon.travelmaker.model.Basket;
+import kr.sm.itaewon.travelmaker.model.Location;
 import kr.sm.itaewon.travelmaker.repo.BasketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,6 +33,27 @@ public class CustomerController {
         }catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<List<Basket>>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //////////Basket
+
+    @PostMapping("/addBasket/{customer_id}")
+    public ResponseEntity<Void> addBasket(@RequestBody Location location, @PathVariable long customer_id){
+
+        if(location == null){
+            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+        }
+        try{
+            Basket basket = new Basket();
+            basket.setCustomerId(customer_id);
+            basket.setLocationId(location.getLocationId());
+            //basket.setRouteId();
+            basketRepository.save(basket);
+            return new ResponseEntity<Void>(HttpStatus.CREATED);
+
+        }catch (Exception e){
+            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

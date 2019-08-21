@@ -117,38 +117,6 @@ public class ArticleController {
     }
 
 
-    //////////Basket
 
-    @PostMapping("/addBasket/{customer_id}")
-    public ResponseEntity<Void> addBasket(@RequestBody Article article, @PathVariable long customer_id){
-        //TODO add wishlist
-        if(article == null){
-            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
-        }
-        try{
-            Basket basket = new Basket();
-            basket.setCustomerId(customer_id);
-            basket.setLocationId(article.getLocationId());
-            //basket.setRouteId();
-            basketRepository.save(basket);
-            return new ResponseEntity<Void>(HttpStatus.CREATED);
-
-        }catch (Exception e){
-            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-//    CustomerController
-//    @GetMapping("/getBasketListByCustomerId/{customer_id}")
-//    public ResponseEntity<List<Basket>> getBasketListByCustomerId(@PathVariable long customer_id){
-//
-//        try{
-//            List<Basket> list = basketRepository.findByCustomerId(customer_id);
-//
-//            return new ResponseEntity<List<Basket>>(list, HttpStatus.OK);
-//        }catch (Exception e){
-//            e.printStackTrace();
-//            return new ResponseEntity<List<Basket>>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
 
 }

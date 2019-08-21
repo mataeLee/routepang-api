@@ -16,11 +16,11 @@ import java.io.IOException;
 @SequenceGenerator(name = "Id_Generator", sequenceName = "Id", initialValue = 1, allocationSize = 1)
 public class Link {
 
+    @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Id")
     @Column(name="link_id")
     private long id;
 
-    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="link_url")
     private String link;
