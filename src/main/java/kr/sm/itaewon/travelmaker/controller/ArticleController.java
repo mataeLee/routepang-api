@@ -132,12 +132,15 @@ public class ArticleController {
         }
         try {
             Link link = linkRepository.findByLinkId(link_id);
-
             article.setLink(link);
+            Timestamp timestamp = new Timestamp(new Date().getTime());
+            article.setReg_date(timestamp);
+            article.setCustomerId(customer_id);
             articleRepository.save(article);
             return new ResponseEntity<Void>(HttpStatus.CREATED);
 
         }catch (Exception e){
+            e.printStackTrace();
             return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

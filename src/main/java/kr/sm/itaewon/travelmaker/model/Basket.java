@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -26,5 +27,6 @@ public class Basket {
     private long locationId;
 
     @Column(name="route_id")
+    @ColumnDefault("-1")
     private long routeId;
 }

@@ -57,7 +57,7 @@ public class CustomerController {
             Basket basket = new Basket();
             basket.setCustomerId(customer_id);
             basket.setLocationId(location.getLocationId());
-            //basket.setRouteId();
+            basket.setRouteId(-1);
             basketRepository.save(basket);
             return new ResponseEntity<Void>(HttpStatus.CREATED);
 
