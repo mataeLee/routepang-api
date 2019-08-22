@@ -11,19 +11,18 @@ public class LinkManager {
 
 
 
-    public Link LinkApi(Link param) {
-        System.out.println("url req");
+    public Link LinkApi(String param) {
 
-        Link link = param;
-        String url = link.getLinkUrl();
+        Link link = new Link();
+        link.setLinkUrl(param);
 
         try{
-            if(url.indexOf("https://") == -1)
-                url = "https://" + url;
+            if(param.indexOf("https://") == -1)
+                param = "https://" + param;
 
-            Document rawData = Jsoup.connect(url).get();
+            Document rawData = Jsoup.connect(param).get();
 
-            String[] values = url.split("/");
+            String[] values = param.split("/");
 
             String base_url = "https://" + values[2];
 
