@@ -23,9 +23,9 @@ public class LinkController {
     }
 
     @PostMapping("/postLink")
-    public ResponseEntity<Link> postLink(@RequestBody Link link){
+    public ResponseEntity<Link> postLink(@RequestBody String link_url){
 
-        Link model = linkManager.LinkApi(link);
+        Link model = linkManager.LinkApi(link_url);
 
         if(model.getLinkUrl() == null){
             return new ResponseEntity<Link>(HttpStatus.BAD_REQUEST);
