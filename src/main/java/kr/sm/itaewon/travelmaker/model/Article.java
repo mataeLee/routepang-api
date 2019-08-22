@@ -1,5 +1,6 @@
 package kr.sm.itaewon.travelmaker.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,8 +37,11 @@ public class Article{
     @Column(name="summary")
     private String summary;
 
-    @Column(name="link")
-    private String link;
+//    @Column(name="link_id")
+//    private long linkId;
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToOne(targetEntity = Link.class, fetch = FetchType.LAZY)
+    private Link link;
 
     @Column(name="reg_date")
     private Timestamp reg_date;

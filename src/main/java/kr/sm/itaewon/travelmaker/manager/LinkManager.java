@@ -15,7 +15,7 @@ public class LinkManager {
         System.out.println("url req");
 
         Link link = param;
-        String url = link.getLink();
+        String url = link.getLinkUrl();
 
         try{
             if(url.indexOf("https://") == -1)
@@ -59,7 +59,7 @@ public class LinkManager {
             link.setImage(main_img);
 
         }catch (IOException e){
-            link.setLink(null);
+            link.setLinkUrl(null);
         }
         return link;
     }

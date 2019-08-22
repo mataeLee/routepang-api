@@ -2,8 +2,10 @@ package kr.sm.itaewon.travelmaker.controller;
 
 import kr.sm.itaewon.travelmaker.model.Article;
 import kr.sm.itaewon.travelmaker.model.Basket;
+import kr.sm.itaewon.travelmaker.model.Link;
 import kr.sm.itaewon.travelmaker.repo.ArticleRepository;
 import kr.sm.itaewon.travelmaker.repo.BasketRepository;
+import kr.sm.itaewon.travelmaker.repo.LinkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,9 @@ public class ArticleController {
     @Autowired
     private BasketRepository basketRepository;
 
+    @Autowired
+    private LinkRepository linkRepository;
+
     @RequestMapping("/")
     public ResponseEntity<Void> badRequest(){
         return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
@@ -39,6 +44,15 @@ public class ArticleController {
             List<Article> list = new ArrayList<>();
             Iterable<Article> articles = articleRepository.findAll();
 
+//            for(Article article: articles){
+//                if(article.getLink().getLinkId()>-1){
+//
+//                    Link link = linkRepository.findByLinkId(article.getLink().getLinkId());
+//                    if(link !=null){
+//                        article.setLink(link);
+//                    }
+//                }
+//            }
             articles.forEach(list::add);
 
             if(list == null){
@@ -93,6 +107,16 @@ public class ArticleController {
 
         try {
             List<Article> list = articleRepository.findByLocationId(location_id);
+
+//            for(Article article: list) {
+//                if (article.getLink().getLinkId() > -1) {
+//
+//                    Link link = linkRepository.findByLinkId(article.getLink().getLinkId());
+//                    if (link != null) {
+//                        article.setLink(link);
+//                    }
+//                }
+//            }
             return new ResponseEntity<List<Article>>(list, HttpStatus.OK);
         }
         catch (Exception e){

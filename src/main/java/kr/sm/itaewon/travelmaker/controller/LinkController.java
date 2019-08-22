@@ -27,7 +27,7 @@ public class LinkController {
 
         Link model = linkManager.LinkApi(link);
 
-        if(model.getLink() == null){
+        if(model.getLinkUrl() == null){
             return new ResponseEntity<Link>(HttpStatus.BAD_REQUEST);
         }
         try {

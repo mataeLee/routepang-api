@@ -19,11 +19,11 @@ public class Link {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "Id")
     @Column(name="link_id")
-    private long id;
+    private long linkId;
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="link_url")
-    private String link;
+    private String linkUrl;
 
     @Column(name="favicon_url")
     private String favicon;
@@ -33,4 +33,5 @@ public class Link {
 
     @Column(name="summary")
     private String summary;
+
 }
