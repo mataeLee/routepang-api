@@ -40,11 +40,11 @@ public class LocationController {
     }
 
     @GetMapping("/getLocationById/{location_id}")
-    public ResponseEntity<List<Location>> getLocationByLocationId(@PathVariable long location_id){
+    public ResponseEntity<Location> getLocationByLocationId(@PathVariable long location_id){
 
-        List<Location> list = locationRepository.findByLocationId(location_id);
+        Location location = locationRepository.findByLocationId(location_id);
 
-        return new ResponseEntity<List<Location>>(list, HttpStatus.OK);
+        return new ResponseEntity<Location>(location, HttpStatus.OK);
     }
 
     @GetMapping("/getLocationByCoordinate/latitude={latitude}&&longitude={longitude}")
