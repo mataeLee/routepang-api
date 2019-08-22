@@ -125,13 +125,15 @@ public class ArticleController {
         }
     }
 
-    @PostMapping("/postArticle/{customer_id}")
-    public ResponseEntity<Void> postArticle(@PathVariable long customer_id, @RequestBody Article article){
+    @PostMapping("/postArticle/customer_id={customer_id}&&link_id={link_id}")
+    public ResponseEntity<Void> postArticle(@PathVariable long customer_id, @PathVariable long link_id, @RequestBody Article article){
         if(article == null){
             return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
         }
-
         try {
+            Link link = linkRepository.findByLinkId(link_id);
+
+            article.setLink(link);
             articleRepository.save(article);
             return new ResponseEntity<Void>(HttpStatus.CREATED);
 
@@ -139,8 +141,5 @@ public class ArticleController {
             return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
-
 
 }
