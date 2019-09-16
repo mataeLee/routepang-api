@@ -2,7 +2,7 @@ package kr.sm.itaewon.travelmaker.controller;
 
 import kr.sm.itaewon.travelmaker.model.Link;
 import kr.sm.itaewon.travelmaker.repo.LinkRepository;
-import kr.sm.itaewon.travelmaker.manager.LinkManager;
+import kr.sm.itaewon.travelmaker.util.LinkManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,11 +23,11 @@ public class LinkController {
     }
 
     @PostMapping("/postLink")
-    public ResponseEntity<Link> postLink(@RequestBody String link_url){
+    public ResponseEntity<Link> postLink(@RequestBody String linkUrl){
 
-        Link model = linkManager.LinkApi(link_url);
+        Link model = linkManager.LinkApi(linkUrl);
 
-        if(model.getLinkUrl() == null){
+        if(model == null || model.getLinkUrl() == null){
             return new ResponseEntity<Link>(HttpStatus.BAD_REQUEST);
         }
         try {
@@ -36,6 +36,7 @@ public class LinkController {
             return new ResponseEntity<Link>(model, HttpStatus.CREATED);
         }
         catch (Exception e){
+            //TODO log
             e.printStackTrace();
 
             return new ResponseEntity<Link>(HttpStatus.INTERNAL_SERVER_ERROR);

@@ -18,31 +18,50 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 public class Article{
 
+    /**
+     *  id
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="article_id")
     private long articleId;
 
+    /**
+     *  연결된 location
+     */
     @NotNull
     @Column(name="location_id")
     private long locationId;
 
+    /**
+     *  작성자
+     */
     @NotNull
     @Column(name="customer_id")
     private long customerId;
 
+    /**
+     *  업로드 이미지
+     */
     @Column(name="image")
     private String image;
 
+    /**
+     *  간단한 후기
+     */
     @Column(name="summary")
     private String summary;
 
-//    @Column(name="link_id")
-//    private long linkId;
+    /**
+     *  외부 블로그 및 sns 게시글 링크
+     */
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(targetEntity = Link.class, fetch = FetchType.LAZY)
     private Link link;
 
+    /**
+     *  작성일
+     */
     @Column(name="reg_date")
     private Timestamp reg_date;
 

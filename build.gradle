@@ -39,8 +39,43 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web:2.1.6.RELEASE'
     compile 'org.springframework.boot:spring-boot-starter-data-jpa:2.1.6.RELEASE'
     compile 'org.projectlombok:lombok:1.18.8'
+
+
     compile group: 'org.jsoup', name: 'jsoup', version: '1.12.1'
-    compile group: 'com.vividsolutions', name: 'jts', version: '1.13'
+
+
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.8'
+
+    // https://mvnrepository.com/artifact/org.hibernate/hibernate-spatial
+    compile group: 'org.hibernate', name: 'hibernate-spatial', version: '5.4.3.Final'
+    // https://mvnrepository.com/artifact/org.hibernate/hibernate-core
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.2.Final'
+// https://mvnrepository.com/artifact/org.hibernatespatial/hibernate-spatial-postgis
+    compile group: 'org.hibernatespatial', name: 'hibernate-spatial-postgis', version: '1.1.1'
+
+
+// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.8'
+// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.9.8'
+// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.9.8'
+
+// https://mvnrepository.com/artifact/org.locationtech.jts/jts-core
+    compile group: 'org.locationtech.jts', name: 'jts-core', version: '1.16.1'
+// https://mvnrepository.com/artifact/org.geolatte/geolatte-geom
+    compile group: 'org.geolatte', name: 'geolatte-geom', version: '1.4.0'
+
+// https://mvnrepository.com/artifact/org.geolatte/geolatte-common
+    compile group: 'org.geolatte', name: 'geolatte-common', version: '0.8'
+// https://mvnrepository.com/artifact/org.geolatte/geolatte-common-hibernate
+    compile group: 'org.geolatte', name: 'geolatte-common-hibernate', version: '0.7'
+    // https://mvnrepository.com/artifact/org.geolatte/geolatte-geojson
+    compile group: 'org.geolatte', name: 'geolatte-geojson', version: '1.4.0'
+
+
+
+
     runtime 'org.postgresql:postgresql:42.2.5'
     
     testCompile 'org.springframework.boot:spring-boot-starter-test:2.1.6.RELEASE'

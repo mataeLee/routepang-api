@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface BasketRepository extends CrudRepository<Basket, Long> {
 
-    List<Basket> findByCustomerId(long customer_id);
+    List<Basket> findByCustomerId(long customerId);
 
 }

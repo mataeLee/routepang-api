@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -25,7 +26,7 @@ public class CustomerController {
 
     @RequestMapping("/")
     public ResponseEntity<Void> badRequest(){
-        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/getBasketListByCustomerId/{customer_id}")
@@ -33,7 +34,7 @@ public class CustomerController {
 
         try{
             List<Basket> basketList = basketRepository.findByCustomerId(customer_id);
-            List<Location> locationList = new ArrayList<Location>();
+            List<Location> locationList = new LinkedList<Location>();
             for(Basket basket: basketList){
                 locationList.add(locationRepository.findByLocationId(basket.getLocationId()));
             }
@@ -65,5 +66,4 @@ public class CustomerController {
             return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 }

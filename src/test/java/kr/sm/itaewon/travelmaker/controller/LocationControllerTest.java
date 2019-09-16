@@ -15,18 +15,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ArticleControllerTest {
-
-
-//    @Autowired
-//    private ArticleRepository repository;
+public class LocationControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    public void getArticleAll() throws Exception{
-        mockMvc.perform(get("/article/getArticleAll")).andExpect(status().isOk());
+    public void getLocationAll() throws Exception{
+        mockMvc.perform(get("/location/getLocationAll")).andExpect(status().isOk());
 
     }
+
+//    @Test
+//    public void getLocationByLocationId() throws Exception{
+//        mockMvc.perform(get("/getLocationById/{location_id}")).andExpect(status().isOk());
+//    }
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -31,7 +32,7 @@ public class ArticleController {
 
     @RequestMapping("/")
     public ResponseEntity<Void> badRequest(){
-        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
     }
 
 
@@ -41,18 +42,11 @@ public class ArticleController {
     public ResponseEntity<List<Article>> getArticleAll(){
 
         try {
-            List<Article> list = new ArrayList<>();
+            //TODO List -> Linked 로 고려할 필요 있음 - 오버헤드 줄이기
+
+            List<Article> list = new LinkedList<>();
             Iterable<Article> articles = articleRepository.findAll();
 
-//            for(Article article: articles){
-//                if(article.getLink().getLinkId()>-1){
-//
-//                    Link link = linkRepository.findByLinkId(article.getLink().getLinkId());
-//                    if(link !=null){
-//                        article.setLink(link);
-//                    }
-//                }
-//            }
             articles.forEach(list::add);
 
             if(list == null){
@@ -69,11 +63,12 @@ public class ArticleController {
         }
     }
 
+
     @GetMapping("/getArticleById/{article_id}")
-    public ResponseEntity<List<Article>> getArticleById(@PathVariable long article_id){
+    public ResponseEntity<List<Article>> getArticleById(@PathVariable long articleId){
 
         try {
-            List<Article> list = articleRepository.findByArticleId(article_id);
+            List<Article> list = articleRepository.findByArticleId(articleId);
 
             if(list == null){
                 return new ResponseEntity<List<Article>>(HttpStatus.NO_CONTENT);
@@ -87,10 +82,10 @@ public class ArticleController {
     }
 
     @GetMapping("/getArticleByCustomerId/{customer_id}")
-    public ResponseEntity<List<Article>> getArticleByCustomerId(@PathVariable long customer_id){
+    public ResponseEntity<List<Article>> getArticleByCustomerId(@PathVariable long customerId){
 
         try {
-            List<Article> list = articleRepository.findByCustomerId(customer_id);
+            List<Article> list = articleRepository.findByCustomerId(customerId);
 
             if(list == null){
                 return new ResponseEntity<List<Article>>(HttpStatus.NO_CONTENT);
@@ -103,20 +98,11 @@ public class ArticleController {
         }
     }
     @GetMapping("/getArticleByLocationId/{location_id}")
-    public ResponseEntity<List<Article>> getArticleByLocationId(@PathVariable long location_id){
+    public ResponseEntity<List<Article>> getArticleByLocationId(@PathVariable long locationId){
 
         try {
-            List<Article> list = articleRepository.findByLocationId(location_id);
+            List<Article> list = articleRepository.findByLocationId(locationId);
 
-//            for(Article article: list) {
-//                if (article.getLink().getLinkId() > -1) {
-//
-//                    Link link = linkRepository.findByLinkId(article.getLink().getLinkId());
-//                    if (link != null) {
-//                        article.setLink(link);
-//                    }
-//                }
-//            }
             return new ResponseEntity<List<Article>>(list, HttpStatus.OK);
         }
         catch (Exception e){
@@ -126,16 +112,16 @@ public class ArticleController {
     }
 
     @PostMapping("/postArticle/customer_id={customer_id}&&link_id={link_id}")
-    public ResponseEntity<Void> postArticle(@PathVariable long customer_id, @PathVariable long link_id, @RequestBody Article article){
+    public ResponseEntity<Void> postArticle(@PathVariable long customerId, @PathVariable long linkId, @RequestBody Article article){
         if(article == null){
             return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
         }
         try {
-            Link link = linkRepository.findByLinkId(link_id);
+            Link link = linkRepository.findByLinkId(linkId);
             article.setLink(link);
             Timestamp timestamp = new Timestamp(new Date().getTime());
             article.setReg_date(timestamp);
-            article.setCustomerId(customer_id);
+            article.setCustomerId(customerId);
             articleRepository.save(article);
             return new ResponseEntity<Void>(HttpStatus.CREATED);
 
