@@ -58,10 +58,10 @@ public class LocationController {
 
         try {
             Point point = geometryFactory.createPoint(new Coordinate(latitude, longitude));
-            System.out.println(point);
-            System.out.println(point.toString());
-            System.out.println("point x : " + point.getX());
-            System.out.println("point y : " + point.getY());
+//            System.out.println(point);
+//            System.out.println(point.toString());
+//            System.out.println("point x : " + point.getX());
+//            System.out.println("point y : " + point.getY());
             List<Location> list = locationRepository.findByCoordinate(point.toString());
 
             for(Location location:list){

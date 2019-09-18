@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LinkRepository extends CrudRepository<Link, Long> {
 
-    Link findByLinkId(long link_id);
+    Link findByLinkId(long linkId);
 }

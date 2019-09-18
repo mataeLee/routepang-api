@@ -20,7 +20,7 @@ public class Basket {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="basket_id")
+    @Column(name="id")
     private long basketId;
 
     /**
@@ -39,6 +39,6 @@ public class Basket {
      *  어떤 루트에 포함된 item인지
      */
     @Column(name="route_id")
-    @ColumnDefault("-1")
+    @ColumnDefault("0")
     private long routeId;
 }

@@ -11,6 +11,7 @@ import lombok.ToString;
 
 import org.geolatte.geom.json.GeometryDeserializer;
 import org.geolatte.geom.json.GeometrySerializer;
+import org.hibernate.annotations.ColumnDefault;
 import org.locationtech.jts.geom.Point;
 
 
@@ -23,31 +24,73 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Location{
 
+    /**
+     *  id
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="location_id")
+    @Column(name="id")
     private long locationId;
 
+    /**
+     *  좌표(4326 좌표계)
+     *  org.locationtech.jts.geom.Point
+     *
+     */
     @JsonSerialize(using = GeojsonSerializer.class)
     @JsonDeserialize(using = GeometryDeserializer.class)
     @Column(name="coordinates")
     private Point coordinates;
 
+    /**
+     *  대표 이미지
+     */
+    //TODO 찬영이의 크롤링 이용하여 가져오기
+    @Transient
+    //@Column(name="image")
+    private String image;
+
+    /**
+     *  장소 place id
+     */
     @Column(name="place_id")
     private String placeId;
 
-    @Column(name="address")
+    /**
+     *  주소
+     */
+    @Column(name="address", length = 1000)
     private String address;
 
-    @Column(name="name")
+    /**
+     *  지명 place name
+     */
+    @Column(name="name", length = 1000)
     private String name;
 
-    @Column(name="used")
-    private double used;
+    /**
+     *  소요 시간
+     */
+    @Column(name="used_time")
+    private double usedTime;
 
+    /**
+     *  장소 타입 (ex.음식점, 명소)
+     */
     @Enumerated(EnumType.ORDINAL)
+    @ColumnDefault("1")
     private LocationCategory category;
 
-    @Column(name="article_count")
+    /**
+     *  평점
+     */
+    @Column(name="rating")
+    @ColumnDefault("0")
+    private float rating;
+
+    /**
+     *  관련 게시글 갯수
+     */
+    @Transient
     private int articleCount;
 }

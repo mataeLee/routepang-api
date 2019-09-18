@@ -13,7 +13,7 @@ public interface LocationRepository extends CrudRepository<Location, Long> {
     @Query(value = "SELECT location_id, place_id FROM location", nativeQuery = true)
     List<Location> findAllLocation();
 
-    Location findByLocationId(long loacation_id);
+    Location findByLocationId(long loacationId);
 
     @Query(value = "SELECT DISTINCT * FROM location WHERE ST_DWithin(coordinates, ?, 500)",
     nativeQuery = true)

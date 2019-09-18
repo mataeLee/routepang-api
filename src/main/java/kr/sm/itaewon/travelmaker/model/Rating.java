@@ -14,17 +14,29 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Rating {
 
+    /**
+     *  id
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="rating_id")
+    @Column(name="id")
     private long ratingId;
 
+    /**
+     *  평가지역
+     */
     @Column(name="location_id")
     private long locationId;
 
+    /**
+     *  평가자
+     */
     @Column(name="customer_id")
     private long customerId;
 
+    /**
+     *  평점
+     */
     @Column(name="rating")
     private float rating;
 

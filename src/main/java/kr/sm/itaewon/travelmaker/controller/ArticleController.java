@@ -2,9 +2,11 @@ package kr.sm.itaewon.travelmaker.controller;
 
 import kr.sm.itaewon.travelmaker.model.Article;
 import kr.sm.itaewon.travelmaker.model.Basket;
+import kr.sm.itaewon.travelmaker.model.Customer;
 import kr.sm.itaewon.travelmaker.model.Link;
 import kr.sm.itaewon.travelmaker.repo.ArticleRepository;
 import kr.sm.itaewon.travelmaker.repo.BasketRepository;
+import kr.sm.itaewon.travelmaker.repo.CustomerRepository;
 import kr.sm.itaewon.travelmaker.repo.LinkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +32,9 @@ public class ArticleController {
     @Autowired
     private LinkRepository linkRepository;
 
+    @Autowired
+    private CustomerRepository customerRepository;
+
     @RequestMapping("/")
     public ResponseEntity<Void> badRequest(){
         return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
@@ -42,7 +47,6 @@ public class ArticleController {
     public ResponseEntity<List<Article>> getArticleAll(){
 
         try {
-            //TODO List -> Linked 로 고려할 필요 있음 - 오버헤드 줄이기
 
             List<Article> list = new LinkedList<>();
             Iterable<Article> articles = articleRepository.findAll();
@@ -64,7 +68,7 @@ public class ArticleController {
     }
 
 
-    @GetMapping("/getArticleById/{article_id}")
+    @GetMapping("/getArticleById/{articleId}")
     public ResponseEntity<List<Article>> getArticleById(@PathVariable long articleId){
 
         try {
@@ -81,7 +85,7 @@ public class ArticleController {
         }
     }
 
-    @GetMapping("/getArticleByCustomerId/{customer_id}")
+    @GetMapping("/getArticleByCustomerId/{customerId}")
     public ResponseEntity<List<Article>> getArticleByCustomerId(@PathVariable long customerId){
 
         try {
@@ -97,7 +101,8 @@ public class ArticleController {
             return new ResponseEntity<List<Article>>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @GetMapping("/getArticleByLocationId/{location_id}")
+
+    @GetMapping("/getArticleByLocationId/{locationId}")
     public ResponseEntity<List<Article>> getArticleByLocationId(@PathVariable long locationId){
 
         try {
@@ -108,26 +113,6 @@ public class ArticleController {
         catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<List<Article>>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @PostMapping("/postArticle/customer_id={customer_id}&&link_id={link_id}")
-    public ResponseEntity<Void> postArticle(@PathVariable long customerId, @PathVariable long linkId, @RequestBody Article article){
-        if(article == null){
-            return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
-        }
-        try {
-            Link link = linkRepository.findByLinkId(linkId);
-            article.setLink(link);
-            Timestamp timestamp = new Timestamp(new Date().getTime());
-            article.setReg_date(timestamp);
-            article.setCustomerId(customerId);
-            articleRepository.save(article);
-            return new ResponseEntity<Void>(HttpStatus.CREATED);
-
-        }catch (Exception e){
-            e.printStackTrace();
-            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

@@ -12,11 +12,11 @@ import static org.hibernate.loader.Loader.SELECT;
 public interface ArticleRepository extends CrudRepository<Article, Long> {
 
     @Query(value = "SELECT COUNT(*) FROM article where ?1 = location_id;", nativeQuery = true)
-    int countArticlesByLocationId(long location_id);
+    int countArticlesByLocationId(long locationId);
 
-    List<Article> findByArticleId(long article_id);
+    List<Article> findByArticleId(long articleId);
 
-    List<Article> findByLocationId(long loacation_id);
+    List<Article> findByLocationId(long loacationId);
 
-    List<Article> findByCustomerId(long customer_id);
+    List<Article> findByCustomerId(long customerId);
 }

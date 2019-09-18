@@ -9,4 +9,6 @@ public interface BasketRepository extends CrudRepository<Basket, Long> {
 
     List<Basket> findByCustomerId(long customerId);
 
+    Basket findByBasketId(long basketId);
+
 }

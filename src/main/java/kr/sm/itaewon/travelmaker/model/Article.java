@@ -23,7 +23,7 @@ public class Article{
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="article_id")
+    @Column(name="id")
     private long articleId;
 
     /**
@@ -43,13 +43,13 @@ public class Article{
     /**
      *  업로드 이미지
      */
-    @Column(name="image")
+    @Column(name="image", length = 1000)
     private String image;
 
     /**
      *  간단한 후기
      */
-    @Column(name="summary")
+    @Column(name="summary", length = 1000)
     private String summary;
 
     /**
@@ -63,6 +63,6 @@ public class Article{
      *  작성일
      */
     @Column(name="reg_date")
-    private Timestamp reg_date;
+    private Timestamp regDate;
 
 }
