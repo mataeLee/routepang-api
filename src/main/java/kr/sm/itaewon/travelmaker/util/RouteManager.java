@@ -7,9 +7,31 @@ import java.util.List;
 
 public class RouteManager {
 
-    public List<Route> makeRoute(){
-        //TODO 클라이언트에게 보내주기 위해 조합
-        return new LinkedList<Route>();
+    /**
+     *
+     * @param routeList -
+     *
+     */
+    public List<Route> makeRoute(List<Route> routeList){
+        //TODO 클라이언트에게 응답하기 위해 조합
+
+        List<Route> list = new LinkedList<>();
+
+        for(Route route : routeList){
+            long parentId = route.getParentId();
+            if(parentId==0){
+                list.add(route);
+            }
+            else {
+                for(Route subRoute : list){
+                    if(subRoute.getRouteId()==route.getParentId()){
+
+                    }
+                }
+            }
+        }
+
+        return list;
     }
 
 }

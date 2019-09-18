@@ -2,6 +2,7 @@ package kr.sm.itaewon.travelmaker.controller;
 
 import kr.sm.itaewon.travelmaker.model.*;
 import kr.sm.itaewon.travelmaker.repo.*;
+import kr.sm.itaewon.travelmaker.util.RouteManager;
 import org.geolatte.geom.V;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,10 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/customer")
@@ -35,6 +33,8 @@ public class CustomerController {
 
     @Autowired
     private RouteRepository routeRepository;
+
+    private RouteManager routeManager;
 
     @RequestMapping("/")
     public ResponseEntity<Void> badRequest(){
@@ -162,15 +162,9 @@ public class CustomerController {
             if(customer == null || customerId == 0){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
+            List<Route> routelist =  routeRepository.findByCustomerId(customerId);
 
-            List<Route> list =  routeRepository.findByCustomerIdAndTop(customerId);
-
-            for(Route route : list){
-                long parentId = route.getParentId();
-                List<Route> routes = routeRepository.findByParentId(parentId);
-
-
-            }
+            List<Route> list = routeManager.makeRoute(routelist);
 
             return new ResponseEntity<List<Route>>(list,HttpStatus.OK);
         }
