@@ -43,14 +43,6 @@ public class Location{
     private Point coordinates;
 
     /**
-     *  대표 이미지
-     */
-    //TODO 찬영이의 크롤링 이용하여 가져오기
-    @Transient
-    //@Column(name="image")
-    private String image;
-
-    /**
      *  장소 place id
      */
     @Column(name="place_id")
@@ -93,4 +85,12 @@ public class Location{
      */
     @Transient
     private int articleCount;
+
+    /**
+     *  대표 이미지
+     */
+    //TODO 찬영이의 크롤링 이용하여 가져오기
+    @Transient
+    //@Column(name="image")
+    private String image;
 }

@@ -45,7 +45,7 @@ public class LocationController {
         return new ResponseEntity<List<Location>>(list, HttpStatus.OK);
     }
 
-    @GetMapping("/getLocationById/{location_id}")
+    @GetMapping("/getLocationById/locationId={location_id}")
     public ResponseEntity<Location> getLocationByLocationId(@PathVariable long location_id){
 
         Location location = locationRepository.findByLocationId(location_id);

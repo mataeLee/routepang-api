@@ -27,11 +27,6 @@ public class JacksonConfig {
 
     private JsonMapper jsonMapper;
 
-//    @Bean
-//    public JtsModule jtsModule() {
-//        return new JtsModule();
-//    }
-
     @Bean
     public Jackson2ObjectMapperBuilder objectMapperBuilder() {
         Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();

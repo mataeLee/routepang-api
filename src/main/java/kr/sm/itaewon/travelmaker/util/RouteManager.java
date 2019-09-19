@@ -1,5 +1,6 @@
 package kr.sm.itaewon.travelmaker.util;
 
+import kr.sm.itaewon.travelmaker.category.RouteCategory;
 import kr.sm.itaewon.travelmaker.model.Route;
 
 import java.util.LinkedList;
@@ -9,29 +10,25 @@ public class RouteManager {
 
     /**
      *
-     * @param routeList -
+     * @param routeList - customer id로 조회한 route들(루트간 수평관계)
      *
      */
-    public List<Route> makeRoute(List<Route> routeList){
+    public List<Route> combinationRoute(List<Route> routeList){
         //TODO 클라이언트에게 응답하기 위해 조합
 
-        List<Route> list = new LinkedList<>();
+        List<Route> subList = routeList;
 
         for(Route route : routeList){
-            long parentId = route.getParentId();
-            if(parentId==0){
-                list.add(route);
-            }
-            else {
-                for(Route subRoute : list){
-                    if(subRoute.getRouteId()==route.getParentId()){
-
-                    }
+            for(Route subRoute: subList){
+                if(route.getRouteId()==subRoute.getParentId()){
+                    route.getRoutes().add(subRoute);
                 }
             }
         }
 
-        return list;
+        return routeList;
     }
+
+
 
 }

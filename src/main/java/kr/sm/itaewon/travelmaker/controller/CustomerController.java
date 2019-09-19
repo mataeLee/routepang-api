@@ -34,7 +34,7 @@ public class CustomerController {
     @Autowired
     private RouteRepository routeRepository;
 
-    private RouteManager routeManager;
+    private RouteManager routeManager = new RouteManager();
 
     @RequestMapping("/")
     public ResponseEntity<Void> badRequest(){
@@ -42,11 +42,14 @@ public class CustomerController {
     }
 
     ////////// article
+
     @PostMapping("/postArticle/customerId={customerId}&&linkId={linkId}")
     public ResponseEntity<Void> postArticle(@PathVariable long customerId, @PathVariable long linkId, @RequestBody Article article){
         try {
 
             Customer customer = customerRepository.findByCustomerId(customerId);
+
+
 
             if(article == null || customer == null){
                 return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
@@ -68,7 +71,7 @@ public class CustomerController {
 
     ////////// Basket
 
-    @PostMapping("/addBasket/{customerId}")
+    @PostMapping("/addBasket/customerId={customerId}")
     public ResponseEntity<Void> addBasket(@RequestBody Location location, @PathVariable long customerId){
         try{
             if(location == null){
@@ -90,7 +93,7 @@ public class CustomerController {
         }
     }
 
-    @GetMapping("/getBasketListByCustomerId/{customerId}")
+    @GetMapping("/getBasketListByCustomerId/customerId={customerId}")
     public ResponseEntity<List<Location>> getBasketListByCustomerId(@PathVariable long customerId){
 
         //TODO locationId가 같은 basket 중복제거 작업 필요
@@ -164,7 +167,7 @@ public class CustomerController {
             }
             List<Route> routelist =  routeRepository.findByCustomerId(customerId);
 
-            List<Route> list = routeManager.makeRoute(routelist);
+            List<Route> list = routeManager.combinationRoute(routelist);
 
             return new ResponseEntity<List<Route>>(list,HttpStatus.OK);
         }
@@ -175,9 +178,8 @@ public class CustomerController {
     }
 
     @PostMapping("/postRoutes/customerId={customerId}")
-    public ResponseEntity<Void> postRoute(@PathVariable long customerId, @RequestBody List<Route> routes, @RequestBody List<Folder> folders){
+    public ResponseEntity<Void> postRoute(@PathVariable long customerId, @RequestBody List<Route> routes){
         //TODO
-
 
 
         return new ResponseEntity<Void>(HttpStatus.OK);

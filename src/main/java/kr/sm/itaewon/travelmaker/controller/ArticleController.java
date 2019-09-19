@@ -68,7 +68,7 @@ public class ArticleController {
     }
 
 
-    @GetMapping("/getArticleById/{articleId}")
+    @GetMapping("/getArticleById/articleId={articleId}")
     public ResponseEntity<List<Article>> getArticleById(@PathVariable long articleId){
 
         try {
@@ -85,7 +85,7 @@ public class ArticleController {
         }
     }
 
-    @GetMapping("/getArticleByCustomerId/{customerId}")
+    @GetMapping("/getArticleByCustomerId/customerId={customerId}")
     public ResponseEntity<List<Article>> getArticleByCustomerId(@PathVariable long customerId){
 
         try {
@@ -102,7 +102,7 @@ public class ArticleController {
         }
     }
 
-    @GetMapping("/getArticleByLocationId/{locationId}")
+    @GetMapping("/getArticleByLocationId/locationId={locationId}")
     public ResponseEntity<List<Article>> getArticleByLocationId(@PathVariable long locationId){
 
         try {
