@@ -3,14 +3,12 @@ package kr.sm.itaewon.travelmaker.model;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import kr.sm.itaewon.travelmaker.category.LocationCategory;
+import kr.sm.itaewon.travelmaker.util.GeojsonDeserializer;
 import kr.sm.itaewon.travelmaker.util.GeojsonSerializer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
-import org.geolatte.geom.json.GeometryDeserializer;
-import org.geolatte.geom.json.GeometrySerializer;
 import org.hibernate.annotations.ColumnDefault;
 import org.locationtech.jts.geom.Point;
 
@@ -38,7 +36,7 @@ public class Location{
      *
      */
     @JsonSerialize(using = GeojsonSerializer.class)
-    @JsonDeserialize(using = GeometryDeserializer.class)
+    @JsonDeserialize(using = GeojsonDeserializer.class)
     @Column(name="coordinates")
     private Point coordinates;
 
@@ -70,7 +68,7 @@ public class Location{
      *  장소 타입 (ex.음식점, 명소)
      */
     @Enumerated(EnumType.ORDINAL)
-    @ColumnDefault("1")
+    @ColumnDefault("0")
     private LocationCategory category;
 
     /**

@@ -27,9 +27,15 @@ public class Article{
     private long articleId;
 
     /**
-     *  연결된 location
+     *  연결된 지역의 place id
      */
     @NotNull
+    @Column(name="place_id")
+    private String placeId;
+
+    /**
+     *  연결된 지역 id
+     */
     @Column(name="location_id")
     private long locationId;
 

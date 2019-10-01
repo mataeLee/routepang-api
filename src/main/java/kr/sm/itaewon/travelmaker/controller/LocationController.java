@@ -4,6 +4,7 @@ import kr.sm.itaewon.travelmaker.model.Article;
 import kr.sm.itaewon.travelmaker.model.Location;
 import kr.sm.itaewon.travelmaker.repo.ArticleRepository;
 import kr.sm.itaewon.travelmaker.repo.LocationRepository;
+import kr.sm.itaewon.travelmaker.util.DegreeCalcurator;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
@@ -27,7 +28,9 @@ public class LocationController {
     @Autowired
     private ArticleRepository articleRepository;
 
-    private GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 26910);
+    private GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
+
+    private DegreeCalcurator degreeCalcurator = new DegreeCalcurator();
 
     @RequestMapping("/")
     public ResponseEntity<Void> badRequest(){
@@ -53,18 +56,18 @@ public class LocationController {
         return new ResponseEntity<Location>(location, HttpStatus.OK);
     }
 
-    @GetMapping("/getLocationByCoordinate/latitude={latitude}&&longitude={longitude}")
-    public ResponseEntity<List<Location>> getLocationByCoordinate(@PathVariable double longitude, @PathVariable double latitude){
+    @GetMapping("/getLocationByCoordinate/latitude={latitude}&&longitude={longitude}&&radius={radius}")
+    public ResponseEntity<List<Location>> getLocationByCoordinate(@PathVariable double longitude, @PathVariable double latitude, @PathVariable int radius){
 
         try {
+
+            float degree = degreeCalcurator.getDegreeByMeter(radius);
+            System.out.println("degree : " + degree);
             Point point = geometryFactory.createPoint(new Coordinate(latitude, longitude));
-//            System.out.println(point);
-//            System.out.println(point.toString());
-//            System.out.println("point x : " + point.getX());
-//            System.out.println("point y : " + point.getY());
-            List<Location> list = locationRepository.findByCoordinate(point.toString());
+            List<Location> list = locationRepository.findByCoordinate(point.toString(), degree);
 
             for(Location location:list){
+                System.out.println("location point : " + location.getCoordinates());
                 int count = articleRepository.countArticlesByLocationId(location.getLocationId());
                 location.setArticleCount(count);
             }
@@ -94,14 +97,16 @@ public class LocationController {
         }
     }
 
-//    @PostMapping("/postLocation")
-//    public ResponseEntity<Void> postLocation(@RequestBody Location location){
-//
-//        try {
-//
-//
-//        }catch (Exception e){
-//
-//        }
-//    }
+    @PostMapping("/postLocation")
+    public ResponseEntity<Void> postLocation(@RequestBody Location location){
+
+        try {
+            locationRepository.save(location);
+            return new ResponseEntity<Void>(HttpStatus.CREATED);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

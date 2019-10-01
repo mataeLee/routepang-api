@@ -102,11 +102,11 @@ public class ArticleController {
         }
     }
 
-    @GetMapping("/getArticleByLocationId/locationId={locationId}")
-    public ResponseEntity<List<Article>> getArticleByLocationId(@PathVariable long locationId){
+    @GetMapping("/getArticleByPlaceId/placeId={placeId}")
+    public ResponseEntity<List<Article>> getArticleByLocationId(@PathVariable long placeId){
 
         try {
-            List<Article> list = articleRepository.findByLocationId(locationId);
+            List<Article> list = articleRepository.findByPlaceId(placeId);
 
             return new ResponseEntity<List<Article>>(list, HttpStatus.OK);
         }

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import org.geolatte.geom.crs.CoordinateReferenceSystem;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
@@ -28,19 +29,23 @@ public class GeojsonDeserializer<T> extends JsonDeserializer<Point> {
 
     private JsonMapper jsonMapper;
 
-    private static final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 26910);
+    private static final GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
 
-    private final Class<T> type;
+    //private final Class<T> type;
+
+    public GeojsonDeserializer() {
+        jsonMapper = new JsonMapper();
+        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+    }
 
     public GeojsonDeserializer(Class<T> type, JsonMapper jsonMapper) {
         this.jsonMapper = jsonMapper;
-        this.type = type;
+        //this.type = type;
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
     }
-//    public GeojsonDeserializer() {
-//        jsonMapper = new JsonMapper();
-//        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
-//    }
+
+
+
     @Override
     public Point deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
         try {

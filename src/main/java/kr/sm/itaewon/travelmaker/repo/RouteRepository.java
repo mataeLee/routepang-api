@@ -15,4 +15,6 @@ public interface RouteRepository extends CrudRepository<Route, Long> {
 
     @Query(value = "SELECT * FROM route WHERE customer_id = ? AND parent_id = 0", nativeQuery = true)
     List<Route> findByCustomerIdAndTop(long customerId);
+
+    Integer deleteAllByCustomerId(long customerId);
 }
