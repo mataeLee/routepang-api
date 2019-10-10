@@ -40,4 +40,9 @@ public class Rating {
     @Column(name="rating")
     private float rating;
 
+    /**
+     *  소요 시간
+     */
+    @Column(name="used_time")
+    private double usedTime;
 }

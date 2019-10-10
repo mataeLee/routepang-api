@@ -2,9 +2,12 @@ package kr.sm.itaewon.travelmaker.controller;
 
 import kr.sm.itaewon.travelmaker.model.Article;
 import kr.sm.itaewon.travelmaker.model.Location;
+import kr.sm.itaewon.travelmaker.model.Rating;
 import kr.sm.itaewon.travelmaker.repo.ArticleRepository;
 import kr.sm.itaewon.travelmaker.repo.LocationRepository;
+import kr.sm.itaewon.travelmaker.repo.RatingRepository;
 import kr.sm.itaewon.travelmaker.util.DegreeCalcurator;
+import kr.sm.itaewon.travelmaker.util.RatingManager;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
@@ -28,9 +31,14 @@ public class LocationController {
     @Autowired
     private ArticleRepository articleRepository;
 
+    @Autowired
+    private RatingRepository ratingRepository;
+
     private GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
 
     private DegreeCalcurator degreeCalcurator = new DegreeCalcurator();
+
+    private RatingManager ratingManager = new RatingManager();
 
     @RequestMapping("/")
     public ResponseEntity<Void> badRequest(){
@@ -45,15 +53,34 @@ public class LocationController {
 
         locations.forEach(list::add);
 
-        return new ResponseEntity<List<Location>>(list, HttpStatus.OK);
+        for(Location location : list){
+            List<Rating> ratingList = ratingRepository.findByLocationId(location.getLocationId());
+            int count = articleRepository.countArticlesByLocationId(location.getLocationId());
+            Rating rating = ratingManager.calcRatingAndUsedTime(ratingList);
+
+            location.setRatingCount(ratingList.size());
+            location.setRating(rating.getRating());
+            location.setUsedTime(rating.getUsedTime());
+            location.setArticleCount(count);
+        }
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     @GetMapping("/getLocationById/locationId={location_id}")
     public ResponseEntity<Location> getLocationByLocationId(@PathVariable long location_id){
 
         Location location = locationRepository.findByLocationId(location_id);
+        List<Rating> ratingList = ratingRepository.findByLocationId(location.getLocationId());
 
-        return new ResponseEntity<Location>(location, HttpStatus.OK);
+        int count = articleRepository.countArticlesByLocationId(location.getLocationId());
+        Rating rating = ratingManager.calcRatingAndUsedTime(ratingList);
+
+        location.setRatingCount(ratingList.size());
+        location.setRating(rating.getRating());
+        location.setUsedTime(rating.getUsedTime());
+        location.setArticleCount(count);
+
+        return new ResponseEntity<>(location, HttpStatus.OK);
     }
 
     @GetMapping("/getLocationByCoordinate/latitude={latitude}&&longitude={longitude}&&radius={radius}")
@@ -62,51 +89,56 @@ public class LocationController {
         try {
 
             float degree = degreeCalcurator.getDegreeByMeter(radius);
-            System.out.println("degree : " + degree);
             Point point = geometryFactory.createPoint(new Coordinate(latitude, longitude));
             List<Location> list = locationRepository.findByCoordinate(point.toString(), degree);
 
             for(Location location:list){
-                System.out.println("location point : " + location.getCoordinates());
                 int count = articleRepository.countArticlesByLocationId(location.getLocationId());
+                List<Rating> ratingList = ratingRepository.findByLocationId(location.getLocationId());
+
+                Rating rating = ratingManager.calcRatingAndUsedTime(ratingList);
+
+                location.setRatingCount(ratingList.size());
+                location.setRating(rating.getRating());
+                location.setUsedTime(rating.getUsedTime());
                 location.setArticleCount(count);
             }
 
-            return new ResponseEntity<List<Location>>(list, HttpStatus.OK);
+            return new ResponseEntity<>(list, HttpStatus.OK);
         }catch (Exception e){
             e.printStackTrace();
-            return new ResponseEntity<List<Location>>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @GetMapping("/getLocationByLiteral/latitude={latitude}&&longitude={longitude}")
-    public ResponseEntity<List<Location>> getLocationByLiteral(@PathVariable double longitude, @PathVariable double latitude){
-
-        try {
-            List<Location> list = locationRepository.findByLiteral(longitude, latitude);
-
-            for(Location location:list){
-                int count = articleRepository.countArticlesByLocationId(location.getLocationId());
-                location.setArticleCount(count);
-            }
-
-            return new ResponseEntity<List<Location>>(list, HttpStatus.OK);
-        }catch (Exception e){
-            e.printStackTrace();
-            return new ResponseEntity<List<Location>>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+//    @GetMapping("/getLocationByLiteral/latitude={latitude}&&longitude={longitude}")
+//    public ResponseEntity<List<Location>> getLocationByLiteral(@PathVariable double longitude, @PathVariable double latitude){
+//
+//        try {
+//            List<Location> list = locationRepository.findByLiteral(longitude, latitude);
+//
+//            for(Location location:list){
+//                int count = articleRepository.countArticlesByLocationId(location.getLocationId());
+//                location.setArticleCount(count);
+//            }
+//
+//            return new ResponseEntity<List<Location>>(list, HttpStatus.OK);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            return new ResponseEntity<List<Location>>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
     @PostMapping("/postLocation")
     public ResponseEntity<Void> postLocation(@RequestBody Location location){
 
         try {
             locationRepository.save(location);
-            return new ResponseEntity<Void>(HttpStatus.CREATED);
+            return new ResponseEntity<>(HttpStatus.CREATED);
 
         }catch (Exception e){
             e.printStackTrace();
-            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

@@ -59,12 +59,6 @@ public class Location{
     private String name;
 
     /**
-     *  소요 시간
-     */
-    @Column(name="used_time")
-    private double usedTime;
-
-    /**
      *  장소 타입 (ex.음식점, 명소)
      */
     @Enumerated(EnumType.ORDINAL)
@@ -74,10 +68,19 @@ public class Location{
     /**
      *  평점
      */
-    @Column(name="rating")
-    @ColumnDefault("0")
+    @Transient
     private float rating;
+    /**
+     *  평가 수
+     */
+    @Transient
+    private int ratingCount;
 
+    /**
+     *  소요 시간
+     */
+    @Transient
+    private double usedTime;
     /**
      *  관련 게시글 갯수
      */

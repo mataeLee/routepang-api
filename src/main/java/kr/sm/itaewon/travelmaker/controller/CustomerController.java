@@ -3,6 +3,7 @@ package kr.sm.itaewon.travelmaker.controller;
 import kr.sm.itaewon.travelmaker.model.*;
 import kr.sm.itaewon.travelmaker.repo.*;
 import kr.sm.itaewon.travelmaker.util.DegreeCalcurator;
+import kr.sm.itaewon.travelmaker.util.LinkManager;
 import kr.sm.itaewon.travelmaker.util.RouteManager;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -39,7 +40,12 @@ public class CustomerController {
     @Autowired
     private RouteRepository routeRepository;
 
-    private GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
+    @Autowired
+    private RatingRepository ratingRepository;
+
+    private LinkManager linkManager = new LinkManager();
+
+    /*private GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);*/
 
     private RouteManager routeManager = new RouteManager();
 
@@ -60,11 +66,11 @@ public class CustomerController {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
 
-            return new ResponseEntity<Customer>(customer, HttpStatus.OK);
+            return new ResponseEntity<>(customer, HttpStatus.OK);
 
         }catch (Exception e){
             e.printStackTrace();
-            return new ResponseEntity<Customer>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -78,11 +84,11 @@ public class CustomerController {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
 
-            return new ResponseEntity<Customer>(customer, HttpStatus.OK);
+            return new ResponseEntity<>(customer, HttpStatus.OK);
 
         }catch (Exception e){
             e.printStackTrace();
-            return new ResponseEntity<Customer>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -96,11 +102,11 @@ public class CustomerController {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
 
-            return new ResponseEntity<Long>(customer.getCustomerId(), HttpStatus.OK);
+            return new ResponseEntity<>(customer.getCustomerId(), HttpStatus.OK);
 
         }catch (Exception e){
             e.printStackTrace();
-            return new ResponseEntity<Long>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -112,7 +118,7 @@ public class CustomerController {
             Customer customer = customerRepository.findByCustomerId(customerId);
 
             if(article == null || customer == null){
-                return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             //TODO place id 검사 후 없으면 새로운 location 삽입
             Location location = locationRepository.findByPlaceId(article.getPlaceId());
@@ -137,11 +143,11 @@ public class CustomerController {
             article.setRegDate(timestamp);
             article.setCustomerId(customerId);
             articleRepository.save(article);
-            return new ResponseEntity<Void>(HttpStatus.CREATED);
+            return new ResponseEntity<>(HttpStatus.CREATED);
 
         }catch (Exception e){
             e.printStackTrace();
-            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -150,15 +156,15 @@ public class CustomerController {
     public ResponseEntity<Void> addBasket(@RequestBody Location location, @PathVariable long customerId){
         try{
             if(location == null){
-                return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             Customer customer = customerRepository.findByCustomerId(customerId);
             if(customer == null){
-                return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             Location locationModel = locationRepository.findByPlaceId(location.getPlaceId());
             if( locationModel == null){
-                return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
 
             // 중복 검사
@@ -173,10 +179,10 @@ public class CustomerController {
             basket.setLocationId(locationModel.getLocationId());
             basket.setRouteId(-1);
             basketRepository.save(basket);
-            return new ResponseEntity<Void>(HttpStatus.CREATED);
+            return new ResponseEntity<>(HttpStatus.CREATED);
 
         }catch (Exception e){
-            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -190,10 +196,10 @@ public class CustomerController {
                 locationList.add(locationRepository.findByLocationId(basket.getLocationId()));
             }
 
-            return new ResponseEntity<List<Location>>(locationList, HttpStatus.OK);
+            return new ResponseEntity<>(locationList, HttpStatus.OK);
         }catch (Exception e){
             e.printStackTrace();
-            return new ResponseEntity<List<Location>>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -202,13 +208,13 @@ public class CustomerController {
 
         try{
             if(basketId==0 || routeId==0){
-                return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
 
             Basket basket = basketRepository.findByBasketId(basketId);
             Route route = routeRepository.findByRouteId(routeId);
             if(basket == null || route == null){
-                return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
 
             if(basket.getRouteId() == 0){
@@ -225,11 +231,11 @@ public class CustomerController {
                 basketRepository.save(item);
             }
 
-            return new ResponseEntity<Void>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
 
         }catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -249,7 +255,7 @@ public class CustomerController {
             return new ResponseEntity<>(HttpStatus.OK);
         }catch (Exception e){
             e.printStackTrace();
-            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -257,11 +263,34 @@ public class CustomerController {
 
     /////////// Rating
     @PostMapping("/giveRating")
-    public ResponseEntity<Void> giveRating(@PathVariable long customerId, @PathVariable long placeId, @PathVariable float star){
-        //TODO 레이팅 구현
+    public ResponseEntity<Void> giveRating(@RequestBody Rating rating){
 
-        return new ResponseEntity<Void>(HttpStatus.CREATED);
+        try {
+            Location location = locationRepository.findByLocationId(rating.getLocationId());
+            Customer customer = customerRepository.findByCustomerId(rating.getCustomerId());
+            Rating rate = ratingRepository.findByCustomerIdAndLocationId(rating.getCustomerId(), rating.getLocationId());
 
+            if(location == null || customer == null){
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            if(rate != null){
+                return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            }
+            if(rating.getRating() < 0 || rating.getRating() > 5){
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            if(rating.getUsedTime() < 0){
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+
+            ratingRepository.save(rating);
+
+            return new ResponseEntity<>(HttpStatus.CREATED);
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     ////////// Route
@@ -277,7 +306,7 @@ public class CustomerController {
             List<Route> routelist =  routeRepository.findByCustomerId(customerId);
             System.out.println("route size : " + routelist.size());
             List<Route> list = routeManager.combinationRoute(routelist);
-            return new ResponseEntity<List<Route>>(list,HttpStatus.OK);
+            return new ResponseEntity<>(list,HttpStatus.OK);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -307,10 +336,56 @@ public class CustomerController {
                 //System.out.println("route : " + route + ", parentId : " + route.getParentId() + ", title : " + route.getTitle());
                 routeRepository.save(route);
             }
-            return new ResponseEntity<Void>(HttpStatus.CREATED);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         }
         catch (Exception e) {
             e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/getLocationListByRouteId/customerId={customerId}&&routeId={routeId}")
+    public ResponseEntity<List<Location>> getLocationListByRouteId(@PathVariable long customerId, @PathVariable long routeId){
+        try {
+
+            Customer customer = customerRepository.findByCustomerId(customerId);
+            if(customer == null){
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+
+            List<Basket> basketList = basketRepository.findByRouteIdAndCustomerId(customerId, routeId);
+            List<Location> locationList = new LinkedList<>();
+
+            for(Basket basket : basketList){
+                Location location = locationRepository.findByLocationId(basket.getLocationId());
+                if(location != null)
+                    locationList.add(location);
+            }
+
+            return new ResponseEntity<>(locationList, HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    ////////// Link
+
+    @PostMapping("/postLink")
+    public ResponseEntity<Link> postLink(@RequestBody String linkUrl) {
+        Link model = linkManager.LinkApi(linkUrl);
+
+        if (model == null || model.getLinkUrl() == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        try {
+            linkRepository.save(model);
+
+            return new ResponseEntity<>(model, HttpStatus.CREATED);
+        } catch (Exception e) {
+            //TODO log
+            e.printStackTrace();
+
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

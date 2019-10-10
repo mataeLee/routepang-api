@@ -12,6 +12,9 @@ public interface BasketRepository extends CrudRepository<Basket, Long> {
 
     Basket findByBasketId(long basketId);
 
-    @Query(value = "SELECT * FROM  location WHERE location_id = ?1 AND customer_id = ?2", nativeQuery = true)
+    @Query(value = "SELECT * FROM  basket WHERE location_id = ?1 AND customer_id = ?2", nativeQuery = true)
     Basket findBylocationIdAndCustomerId(long locationId, long customerId);
+
+    @Query(value = "SELECT * FROM  basket WHERE route_id = ?1 AND customer_id = ?2", nativeQuery = true)
+    List<Basket> findByRouteIdAndCustomerId(long routeId, long customerId);
 }
