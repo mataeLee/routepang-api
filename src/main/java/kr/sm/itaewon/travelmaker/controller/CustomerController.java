@@ -156,9 +156,21 @@ public class CustomerController {
             if(customer == null){
                 return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
             }
+            Location locationModel = locationRepository.findByPlaceId(location.getPlaceId());
+            if( locationModel == null){
+                return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+            }
+
+            // 중복 검사
+            Basket basketModel = basketRepository.findBylocationIdAndCustomerId(locationModel.getLocationId(), customerId);
+
+            if(basketModel != null){
+                return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+            }
+
             Basket basket = new Basket();
             basket.setCustomerId(customerId);
-            basket.setLocationId(location.getLocationId());
+            basket.setLocationId(locationModel.getLocationId());
             basket.setRouteId(-1);
             basketRepository.save(basket);
             return new ResponseEntity<Void>(HttpStatus.CREATED);
@@ -168,10 +180,9 @@ public class CustomerController {
         }
     }
 
-    @GetMapping("/getBasketListByCustomerId/customerId={customerId}")
-    public ResponseEntity<List<Location>> getBasketListByCustomerId(@PathVariable long customerId){
+    @GetMapping("/getLocationListByBasket/customerId={customerId}")
+    public ResponseEntity<List<Location>> getLocationListByBasket(@PathVariable long customerId){
 
-        //TODO locationId가 같은 basket 중복제거 작업 필요
         try{
             List<Basket> basketList = basketRepository.findByCustomerId(customerId);
             List<Location> locationList = new LinkedList<Location>();
@@ -195,7 +206,8 @@ public class CustomerController {
             }
 
             Basket basket = basketRepository.findByBasketId(basketId);
-            if(basket == null){
+            Route route = routeRepository.findByRouteId(routeId);
+            if(basket == null || route == null){
                 return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
             }
 
@@ -221,6 +233,27 @@ public class CustomerController {
         }
 
     }
+
+    @DeleteMapping("/deleteBasketByLocationId/customerId={customerId}")
+    public ResponseEntity<Void> deleteBasketByLocationId(@RequestBody Location location, @PathVariable long customerId){
+
+        try {
+            Location locationModel = locationRepository.findByPlaceId(location.getPlaceId());
+
+            Basket basket = basketRepository.findBylocationIdAndCustomerId(locationModel.getLocationId(),customerId);
+            if(basket == null){
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            basketRepository.deleteById(basket.getBasketId());
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
 
     /////////// Rating
     @PostMapping("/giveRating")
@@ -281,6 +314,4 @@ public class CustomerController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
 }

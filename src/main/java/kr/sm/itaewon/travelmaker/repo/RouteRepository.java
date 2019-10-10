@@ -17,4 +17,6 @@ public interface RouteRepository extends CrudRepository<Route, Long> {
     List<Route> findByCustomerIdAndTop(long customerId);
 
     Integer deleteAllByCustomerId(long customerId);
+
+    Route findByRouteId(long routeId);
 }
