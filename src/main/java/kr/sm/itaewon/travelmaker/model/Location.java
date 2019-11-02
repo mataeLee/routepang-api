@@ -10,10 +10,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.locationtech.jts.geom.Point;
 
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Getter
@@ -94,4 +97,9 @@ public class Location{
     @Transient
     //@Column(name="image")
     private String image;
+
+    @CreationTimestamp
+    private Timestamp regDate;
+    @UpdateTimestamp
+    private Timestamp updateDate;
 }

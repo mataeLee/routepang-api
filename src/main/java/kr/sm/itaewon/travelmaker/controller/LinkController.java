@@ -28,18 +28,18 @@ public class LinkController {
         Link model = linkManager.LinkApi(linkUrl);
 
         if(model == null || model.getLinkUrl() == null){
-            return new ResponseEntity<Link>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         try {
             repository.save(model);
 
-            return new ResponseEntity<Link>(model, HttpStatus.CREATED);
+            return new ResponseEntity<>(model, HttpStatus.CREATED);
         }
         catch (Exception e){
             //TODO log
             e.printStackTrace();
 
-            return new ResponseEntity<Link>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

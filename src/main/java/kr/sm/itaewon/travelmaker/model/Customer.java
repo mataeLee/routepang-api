@@ -4,8 +4,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -40,4 +45,25 @@ public class Customer {
     @Column(name="name")
     private String name;
 
+    /**
+     *  이메일
+     */
+    @Column(name="email")
+    private String email;
+
+    /**
+     *  계정 정보 생성 날짜
+     */
+    @CreationTimestamp
+    private Timestamp regDate;
+
+    /**
+     *  계정 정보 업데이트 날짜
+     */
+    @UpdateTimestamp
+    private Timestamp updateDate;
+
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinColumn(name = "customerId")
+    private Role role;
 }

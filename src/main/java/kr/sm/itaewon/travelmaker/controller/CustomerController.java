@@ -12,6 +12,7 @@ import org.locationtech.jts.geom.PrecisionModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,13 +50,13 @@ public class CustomerController {
 
     private RouteManager routeManager = new RouteManager();
 
-
     @RequestMapping("/")
     public ResponseEntity<Void> badRequest(){
         return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
     }
 
     ////////// customer
+
     @GetMapping("/getCustomerById/customerId={customerId}")
     public ResponseEntity<Customer> getCustomerById(@PathVariable long customerId){
 
@@ -63,7 +64,7 @@ public class CustomerController {
             Customer customer = customerRepository.findByCustomerId(customerId);
             if(customer == null){
                 System.out.println("no customer");
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
 
             return new ResponseEntity<>(customer, HttpStatus.OK);
@@ -81,7 +82,7 @@ public class CustomerController {
             Customer customer = customerRepository.findByName(name);
             if(customer == null){
                 System.out.println("no customer");
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
 
             return new ResponseEntity<>(customer, HttpStatus.OK);
@@ -90,8 +91,8 @@ public class CustomerController {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
+
     @GetMapping("/getCustomerIdByAccount")
     public ResponseEntity<Long> getCustomerIdByName(@RequestBody String account){
 
@@ -99,7 +100,7 @@ public class CustomerController {
             Customer customer = customerRepository.findByAccount(account);
             if(customer == null){
                 System.out.println("no customer");
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
 
             return new ResponseEntity<>(customer.getCustomerId(), HttpStatus.OK);
@@ -109,10 +110,10 @@ public class CustomerController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
     ////////// article
+
     @PostMapping("/postArticle/customerId={customerId}")
-    public ResponseEntity<Void> postArticle(@PathVariable long customerId, @RequestBody Link link, @RequestBody Article article){
+    public ResponseEntity<Void> postArticle(@PathVariable long customerId, @RequestBody Link link, @RequestBody Article article, @RequestBody Location location){
         try {
 
             Customer customer = customerRepository.findByCustomerId(customerId);
@@ -121,21 +122,13 @@ public class CustomerController {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             //TODO place id 검사 후 없으면 새로운 location 삽입
-            Location location = locationRepository.findByPlaceId(article.getPlaceId());
-            if(location == null){
-                location = new Location();
-//                location.setCategory();
-//                location.setAddress();
-//                Point point = geometryFactory.createPoint(new Coordinate(latitude, longitude));
-//                location.setCoordinates(point);
-//                location.setPlaceId();
-//                location.setName();
-//                location.setUsedTime();
+            Location locationModel = locationRepository.findByPlaceId(article.getPlaceId());
+            if(locationModel == null){
                 locationRepository.save(location);
             }
 
-            Link linkTmp = linkRepository.findByLinkId(link.getLinkId());
-            if(linkTmp == null){
+            Link linkModel = linkRepository.findByLinkId(link.getLinkId());
+            if(linkModel == null){
                 article.setLink(link);
             }
 
@@ -191,7 +184,7 @@ public class CustomerController {
 
         try{
             List<Basket> basketList = basketRepository.findByCustomerId(customerId);
-            List<Location> locationList = new LinkedList<Location>();
+            List<Location> locationList = new ArrayList<>();
             for(Basket basket: basketList){
                 locationList.add(locationRepository.findByLocationId(basket.getLocationId()));
             }
@@ -301,7 +294,7 @@ public class CustomerController {
             Customer customer = customerRepository.findByCustomerId(customerId);
             if(customer == null || customerId == 0){
                 System.out.println("no customer");
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             List<Route> routelist =  routeRepository.findByCustomerId(customerId);
             System.out.println("route size : " + routelist.size());
@@ -323,7 +316,7 @@ public class CustomerController {
 
             if(customer == null || customerId == 0){
                 System.out.println("no customer");
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
 
             List<Route> list = routeManager.sortRoute(routes);
@@ -333,7 +326,6 @@ public class CustomerController {
             System.out.println("delete routes result : " + result);
 
             for(Route route: list){
-                //System.out.println("route : " + route + ", parentId : " + route.getParentId() + ", title : " + route.getTitle());
                 routeRepository.save(route);
             }
             return new ResponseEntity<>(HttpStatus.CREATED);
@@ -354,7 +346,7 @@ public class CustomerController {
             }
 
             List<Basket> basketList = basketRepository.findByRouteIdAndCustomerId(customerId, routeId);
-            List<Location> locationList = new LinkedList<>();
+            List<Location> locationList = new ArrayList<>();
 
             for(Basket basket : basketList){
                 Location location = locationRepository.findByLocationId(basket.getLocationId());
@@ -383,10 +375,10 @@ public class CustomerController {
 
             return new ResponseEntity<>(model, HttpStatus.CREATED);
         } catch (Exception e) {
-            //TODO log
             e.printStackTrace();
-
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
 }

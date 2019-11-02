@@ -40,22 +40,15 @@ public class ArticleController {
         return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
     }
 
-
-    ////////////Article
-
     @GetMapping("/getArticleAll")
     public ResponseEntity<List<Article>> getArticleAll(){
 
         try {
 
-            List<Article> list = new LinkedList<>();
+            List<Article> list = new ArrayList<>();
             Iterable<Article> articles = articleRepository.findAll();
 
             articles.forEach(list::add);
-
-            if(list == null){
-                return new ResponseEntity<List<Article>>(HttpStatus.NO_CONTENT);
-            }
 
             return new ResponseEntity<List<Article>>(list, HttpStatus.OK);
 
@@ -67,21 +60,17 @@ public class ArticleController {
         }
     }
 
-
     @GetMapping("/getArticleById/articleId={articleId}")
     public ResponseEntity<List<Article>> getArticleById(@PathVariable long articleId){
 
         try {
             List<Article> list = articleRepository.findByArticleId(articleId);
 
-            if(list == null){
-                return new ResponseEntity<List<Article>>(HttpStatus.NO_CONTENT);
-            }
-            return new ResponseEntity<List<Article>>(list, HttpStatus.OK);
+            return new ResponseEntity<>(list, HttpStatus.OK);
 
         } catch (Exception e){
             e.printStackTrace();
-            return new ResponseEntity<List<Article>>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -91,14 +80,11 @@ public class ArticleController {
         try {
             List<Article> list = articleRepository.findByCustomerId(customerId);
 
-            if(list == null){
-                return new ResponseEntity<List<Article>>(HttpStatus.NO_CONTENT);
-            }
-            return new ResponseEntity<List<Article>>(list, HttpStatus.OK);
+            return new ResponseEntity<>(list, HttpStatus.OK);
 
         } catch (Exception e){
             e.printStackTrace();
-            return new ResponseEntity<List<Article>>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -108,11 +94,11 @@ public class ArticleController {
         try {
             List<Article> list = articleRepository.findByPlaceId(placeId);
 
-            return new ResponseEntity<List<Article>>(list, HttpStatus.OK);
+            return new ResponseEntity<>(list, HttpStatus.OK);
         }
         catch (Exception e){
             e.printStackTrace();
-            return new ResponseEntity<List<Article>>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

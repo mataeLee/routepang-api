@@ -129,16 +129,17 @@ public class LocationController {
 //        }
 //    }
 
-    @PostMapping("/postLocation")
-    public ResponseEntity<Void> postLocation(@RequestBody Location location){
 
-        try {
-            locationRepository.save(location);
-            return new ResponseEntity<>(HttpStatus.CREATED);
-
-        }catch (Exception e){
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+//    @PostMapping("/postLocation")
+//    public ResponseEntity<Void> postLocation(@RequestBody Location location){
+//
+//        try {
+//            locationRepository.save(location);
+//            return new ResponseEntity<>(HttpStatus.CREATED);
+//
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 }

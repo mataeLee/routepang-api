@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -68,7 +70,10 @@ public class Article{
     /**
      *  작성일
      */
-    @Column(name="reg_date")
+    @CreationTimestamp
     private Timestamp regDate;
+
+    @UpdateTimestamp
+    private Timestamp updateDate;
 
 }

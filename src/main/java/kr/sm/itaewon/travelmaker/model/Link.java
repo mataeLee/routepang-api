@@ -2,12 +2,15 @@ package kr.sm.itaewon.travelmaker.model;
 
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import javax.persistence.*;
 import java.io.IOException;
+import java.sql.Timestamp;
 
 @Entity
 @Getter
@@ -53,5 +56,9 @@ public class Link {
     @ColumnDefault("'no summary'")
     private String summary;
 
+    @CreationTimestamp
+    private Timestamp regDate;
+    @UpdateTimestamp
+    private Timestamp updateDate;
 
 }

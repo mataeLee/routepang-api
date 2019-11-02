@@ -8,46 +8,39 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.UUID;
+
 
 @Entity
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
-public class Rating {
+public class ChatRoom {
 
     /**
-     *  id
+     *  방 고유 Id
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
-    private long ratingId;
+    @NotNull
+    @Column(name="room_id")
+    private String roomId;
 
     /**
-     *  평가지역
+     *  방 이름
      */
-    @Column(name="location_id")
-    private long locationId;
+    @Column(name="title")
+    private String title;
 
     /**
-     *  평가자
+     *
      */
-    @Column(name="customer_id")
-    private long customerId;
-
-    /**
-     *  평점
-     */
-    @Column(name="rating")
-    private float rating;
-
-    /**
-     *  소요 시간
-     */
-    @Column(name="used_time")
-    private double usedTime;
+    @Column(name="customer")
+    @ManyToOne(targetEntity = Customer.class, fetch = FetchType.LAZY)
+    private List<Customer> customers;
 
     @CreationTimestamp
     private Timestamp regDate;

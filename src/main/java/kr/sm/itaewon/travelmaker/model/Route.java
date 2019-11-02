@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -58,9 +60,14 @@ public class Route{
     /**
      *  생성일
      */
-    @Column(name="reg_date")
+    @CreationTimestamp
     private Timestamp regDate;
 
+    /**
+     *  수정일
+     */
+    @UpdateTimestamp
+    private Timestamp updateDate;
     /**
      *  여행 시작 날짜
      */
