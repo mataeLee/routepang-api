@@ -14,52 +14,19 @@ public class CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
 
-    @Autowired
-    private JwtService jwtService;
-
-    public Customer signup(Customer customer){
-
-        System.out.println("signup processing");
-//        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-//
-//        //customer.setPassword(passwordEncoder.encode(customer.getPassword()));
-
-        Customer customerModel = new Customer();
-        Role role = new Role();
-        role.setRoleName("USER");
-
-        customerModel.setRole(role);
-        customerModel.setReference(customer.getReference());
-        customerModel.setEmail(customer.getEmail());
-        customerModel.setPassword(BCrypt.hashpw(customer.getPassword(), BCrypt.gensalt()));
-        customerModel.setAccount(customer.getAccount());
-
-
-        customerRepository.save(customer);
-        return customerModel;
+    public Customer findByCustomerId(long customerId) {
+        Customer customer = customerRepository.findByCustomerId(customerId);
+        return customer;
     }
 
-    public Customer signin(String account, String password){
-        System.out.println("signin processing");
-        // 계정 찾기
+
+    public Customer findByAccount(String account) {
         Customer customer = customerRepository.findByAccount(account);
+        return customer;
+    }
 
-        if(customer == null){
-            return null;
-        }
-        // 비밀번호 검증
-        if(BCrypt.checkpw(password, customer.getPassword())){
-            // 로그인 토큰 발행
-            String token = jwtService.create("customer", customer, "user");
-            customer.setToken(token);
-
-            // 세션 발행
-            Session session = new Session();
-            session.setLoginToken(token);
-            session.setCustomerId(customer.getCustomerId());
-            return customer;
-        }
-        return null;
+    public void save(Customer customer){
+        customerRepository.save(customer);
     }
 
 }

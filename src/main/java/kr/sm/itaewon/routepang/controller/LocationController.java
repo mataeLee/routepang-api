@@ -5,8 +5,9 @@ import kr.sm.itaewon.routepang.model.Rating;
 import kr.sm.itaewon.routepang.repo.ArticleRepository;
 import kr.sm.itaewon.routepang.repo.LocationRepository;
 import kr.sm.itaewon.routepang.repo.RatingRepository;
+import kr.sm.itaewon.routepang.service.LocationService;
+import kr.sm.itaewon.routepang.service.RatingService;
 import kr.sm.itaewon.routepang.util.DegreeCalcurator;
-import kr.sm.itaewon.routepang.util.RatingManager;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
@@ -16,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.LinkedList;
 import java.util.List;
 
 @RestController
@@ -24,109 +24,45 @@ import java.util.List;
 public class LocationController {
 
     @Autowired
-    private LocationRepository locationRepository;
+    private LocationService locationService;
 
     @Autowired
-    private ArticleRepository articleRepository;
+    private RatingService ratingService;
 
-    @Autowired
-    private RatingRepository ratingRepository;
-
-    private GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
-
-    private DegreeCalcurator degreeCalcurator = new DegreeCalcurator();
-
-    private RatingManager ratingManager = new RatingManager();
-
-    @RequestMapping("/")
+    @RequestMapping("/**")
     public ResponseEntity<Void> badRequest(){
         return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/getLocationAll")
+    @GetMapping("/locations")
     public ResponseEntity<List<Location>> getLocationAll(){
 
-        List<Location> list = new LinkedList<>();
-        Iterable<Location> locations = locationRepository.findAll();
+        List<Location> list = locationService.findAll();
 
-        locations.forEach(list::add);
+        list = ratingService.insertRating(list);
 
-        for(Location location : list){
-            List<Rating> ratingList = ratingRepository.findByLocationId(location.getLocationId());
-            int count = articleRepository.countArticlesByLocationId(location.getLocationId());
-            Rating rating = ratingManager.calcRatingAndUsedTime(ratingList);
-
-            location.setRatingCount(ratingList.size());
-            location.setRating(rating.getRating());
-            location.setUsedTime(rating.getUsedTime());
-            location.setArticleCount(count);
-        }
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    @GetMapping("/getLocationById/locationId={location_id}")
-    public ResponseEntity<Location> getLocationByLocationId(@PathVariable long location_id){
+    @GetMapping("/location/{locationId}")
+    public ResponseEntity<Location> getLocationByLocationId(@PathVariable long locationId){
 
-        Location location = locationRepository.findByLocationId(location_id);
-        List<Rating> ratingList = ratingRepository.findByLocationId(location.getLocationId());
+        Location location = locationService.findByLocationId(locationId);
 
-        int count = articleRepository.countArticlesByLocationId(location.getLocationId());
-        Rating rating = ratingManager.calcRatingAndUsedTime(ratingList);
-
-        location.setRatingCount(ratingList.size());
-        location.setRating(rating.getRating());
-        location.setUsedTime(rating.getUsedTime());
-        location.setArticleCount(count);
+        location = ratingService.insertRating(location);
 
         return new ResponseEntity<>(location, HttpStatus.OK);
     }
 
-    @GetMapping("/getLocationByCoordinate/latitude={latitude}&&longitude={longitude}&&radius={radius}")
-    public ResponseEntity<List<Location>> getLocationByCoordinate(@PathVariable double longitude, @PathVariable double latitude, @PathVariable int radius){
+    @GetMapping("/locations/{latitude}&&{longitude}&&{radius}/coordinates")
+    public ResponseEntity<List<Location>> getLocationByCoordinates(@PathVariable double longitude, @PathVariable double latitude, @PathVariable int radius){
 
-        try {
+        List<Location> list = locationService.findByCoordinates(longitude, latitude, radius);
 
-            float degree = degreeCalcurator.getDegreeByMeter(radius);
-            Point point = geometryFactory.createPoint(new Coordinate(latitude, longitude));
-            List<Location> list = locationRepository.findByCoordinate(point.toString(), degree);
+        list = ratingService.insertRating(list);
 
-            for(Location location:list){
-                int count = articleRepository.countArticlesByLocationId(location.getLocationId());
-                List<Rating> ratingList = ratingRepository.findByLocationId(location.getLocationId());
-
-                Rating rating = ratingManager.calcRatingAndUsedTime(ratingList);
-
-                location.setRatingCount(ratingList.size());
-                location.setRating(rating.getRating());
-                location.setUsedTime(rating.getUsedTime());
-                location.setArticleCount(count);
-            }
-
-            return new ResponseEntity<>(list, HttpStatus.OK);
-        }catch (Exception e){
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
-
-//    @GetMapping("/getLocationByLiteral/latitude={latitude}&&longitude={longitude}")
-//    public ResponseEntity<List<Location>> getLocationByLiteral(@PathVariable double longitude, @PathVariable double latitude){
-//
-//        try {
-//            List<Location> list = locationRepository.findByLiteral(longitude, latitude);
-//
-//            for(Location location:list){
-//                int count = articleRepository.countArticlesByLocationId(location.getLocationId());
-//                location.setArticleCount(count);
-//            }
-//
-//            return new ResponseEntity<List<Location>>(list, HttpStatus.OK);
-//        }catch (Exception e){
-//            e.printStackTrace();
-//            return new ResponseEntity<List<Location>>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
-
 
 //    @PostMapping("/postLocation")
 //    public ResponseEntity<Void> postLocation(@RequestBody Location location){

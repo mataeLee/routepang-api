@@ -12,9 +12,9 @@ public interface ArticleRepository extends CrudRepository<Article, Long> {
     @Query(value = "SELECT COUNT(*) FROM article where ?1 = location_id;", nativeQuery = true)
     int countArticlesByLocationId(long locationId);
 
-    List<Article> findByArticleId(long articleId);
+    Article findByArticleId(long articleId);
 
-    List<Article> findByPlaceId(long placeId);
+    List<Article> findByPlaceId(String placeId);
 
     List<Article> findByCustomerId(long customerId);
 }

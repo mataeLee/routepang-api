@@ -1,8 +1,11 @@
 package kr.sm.itaewon.routepang.util;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
+@AllArgsConstructor
 public class DegreeCalcurator {
 
     /**

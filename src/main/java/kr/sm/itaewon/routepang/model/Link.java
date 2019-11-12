@@ -58,6 +58,7 @@ public class Link {
 
     @CreationTimestamp
     private Timestamp regDate;
+
     @UpdateTimestamp
     private Timestamp updateDate;
 

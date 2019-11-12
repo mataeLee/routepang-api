@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface LinkRepository extends CrudRepository<Link, Long> {
 
     Link findByLinkId(long linkId);
+
+    Link findByLinkUrl(String linkUrl);
 }

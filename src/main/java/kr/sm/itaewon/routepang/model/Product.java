@@ -1,4 +1,4 @@
-package kr.sm.itaewon.travelmaker.model;
+package kr.sm.itaewon.routepang.model;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Setter
 @ToString
 @NoArgsConstructor
-public class Basket {
+public class Product {
 
     /**
      *  id
@@ -21,7 +21,7 @@ public class Basket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
-    private long basketId;
+    private long productId;
 
     /**
      *  사용자

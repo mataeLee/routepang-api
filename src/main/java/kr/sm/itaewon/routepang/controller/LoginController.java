@@ -8,6 +8,7 @@ import kr.sm.itaewon.routepang.repo.CustomerRepository;
 import kr.sm.itaewon.routepang.repo.RoleRepository;
 import kr.sm.itaewon.routepang.service.CustomerService;
 import kr.sm.itaewon.routepang.service.JwtService;
+import kr.sm.itaewon.routepang.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,64 +23,51 @@ import javax.servlet.http.HttpSession;
 public class LoginController {
 
     @Autowired
-    private CustomerRepository customerRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
+    private LoginService loginService;
 
     @Autowired
     private CustomerService customerService;
 
-    @Autowired
-    private JwtService jwtService;
-
-//    @GetMapping("/create")
-//    public ResponseEntity<Void> create(){
-//
-//        Role role = new Role();
-//        role.setRoleName("USER");
-//        roleRepository.save(role);
-//
-//        Customer customer= new Customer();
-//        customer.setAccount("tylee94");
-//        customer.setRole(role);
-//        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-//        String pwd = passwordEncoder.encode("qwe123");
-//        customer.setPassword(pwd);
-//        customer.setEmail("tylee94@gmail.com");
-//        customer.setReference("알로항");
-//        customerRepository.save(customer);
-//
-//        return new ResponseEntity<>(HttpStatus.CREATED);
-//    }
-
     @PostMapping("/signin")
-    public ResponseEntity<Customer> signIn(@RequestBody Customer customer){
-        System.out.println("sign in");
-        Customer loginMember = customerService.signin(customer.getAccount(), customer.getPassword());
+    public ResponseEntity<Customer> signin(@RequestBody Customer customer){
+        String account = customer.getAccount();
+        String password = customer.getPassword();
+
+        // 계정 찾기
+        Customer customerModel = customerService.findByAccount(account);
+
+        if(customer == null){
+            // 회원가입 팝업
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        // 인증
+        Customer loginMember = loginService.signin(customerModel, account, password);
 
         if(loginMember != null) {
             return new ResponseEntity<>(loginMember, HttpStatus.OK);
         }
+        // 인증 실패 팝업
         else
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<Customer> signUp(@RequestBody Customer customerParam){
+    public ResponseEntity<Customer> signup(@RequestBody Customer customerParam){
 
-        System.out.println("sign up");
-        Customer customerModel = customerService.signup(customerParam);
+        Customer customerModel = loginService.signup(customerParam);
+
+        customerService.save(customerModel);
 
         return new ResponseEntity<>(customerModel, HttpStatus.CREATED);
     }
 
-//    @GetMapping("/logout")
-//    public ResponseEntity<Void> logout(){
-//
-//        if(true)
-//            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-//
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
+
+    @DeleteMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestBody Customer customer){
+
+        loginService.logout(customer);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

@@ -2,6 +2,7 @@ package kr.sm.itaewon.routepang.controller;
 
 import kr.sm.itaewon.routepang.model.Link;
 import kr.sm.itaewon.routepang.repo.LinkRepository;
+import kr.sm.itaewon.routepang.service.LinkService;
 import kr.sm.itaewon.routepang.util.LinkManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,33 +14,39 @@ import org.springframework.web.bind.annotation.*;
 public class LinkController {
 
     @Autowired
-    private LinkRepository repository;
+    private LinkService linkService;
 
-    private LinkManager linkManager = new LinkManager();
-
-    @RequestMapping("/")
+    @RequestMapping("/**")
     public ResponseEntity<Void> badRequest(){
-        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/postLink")
     public ResponseEntity<Link> postLink(@RequestBody String linkUrl){
 
-        Link model = linkManager.LinkApi(linkUrl);
 
-        if(model == null || model.getLinkUrl() == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        try {
-            repository.save(model);
+        Link linkModel = linkService.save(linkUrl);
 
-            return new ResponseEntity<>(model, HttpStatus.CREATED);
-        }
-        catch (Exception e){
-            //TODO log
-            e.printStackTrace();
+        return new ResponseEntity<>(linkModel, HttpStatus.CREATED);
 
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
+
+    ////////// Link
+
+//    @PostMapping("/postLink")
+//    public ResponseEntity<Link> postLink(@RequestBody String linkUrl) {
+//        Link model = linkManager.LinkApi(linkUrl);
+//
+//        if (model == null || model.getLinkUrl() == null) {
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
+//        try {
+//            linkRepository.save(model);
+//
+//            return new ResponseEntity<>(model, HttpStatus.CREATED);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 }
