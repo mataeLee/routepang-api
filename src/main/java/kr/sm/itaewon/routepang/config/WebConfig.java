@@ -22,9 +22,9 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         System.out.println(" add interceptor ");
         registry.addInterceptor(jwtInterceptor)
-                //.addPathPatterns("/cusotmer/**")
-                .excludePathPatterns("/article/**")
-                .excludePathPatterns("/customer/**")
+                .addPathPatterns("/**")
+//                .excludePathPatterns("/article/**")
+//                .excludePathPatterns("/customer/**")
                 .excludePathPatterns("/login/**")
                 .excludePathPatterns("/error/**");
     }
