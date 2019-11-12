@@ -28,7 +28,7 @@ public class LoginService {
         Role role = new Role();
         role.setRoleName("USER");
 
-        customerModel.setRole(role);
+        //customerModel.setRole(role);
         customerModel.setReference(customer.getReference());
         customerModel.setEmail(customer.getEmail());
         customerModel.setPassword(BCrypt.hashpw(customer.getPassword(), BCrypt.gensalt()));
@@ -37,7 +37,7 @@ public class LoginService {
         return customerModel;
     }
 
-    public Customer signin(Customer customer, String account, String password){
+    public String signin(Customer customer, String account, String password){
         System.out.println("signin processing");
 
         // 로그인 id 검증
@@ -49,7 +49,6 @@ public class LoginService {
 
             // 로그인 토큰 발행
             String token = jwtService.create("customer", customer, "user");
-            customer.setToken(token);
 
             // 세션 발행
             Session session = new Session();
@@ -57,11 +56,12 @@ public class LoginService {
             session.setCustomerId(customer.getCustomerId());
             //session.setPushToken();
             //sessionService.sava(session);
-            return customer;
+            return token;
         }
         return null;
     }
 
+    //TODO logout 요청 처리(세션 관리)
     public void logout(Customer customer) {
         //sessionService.delete(customer);
     }

@@ -11,6 +11,8 @@ import org.jsoup.select.Elements;
 import javax.persistence.*;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -55,6 +57,9 @@ public class Link {
     @Column(name="summary", length = 1000)
     @ColumnDefault("'no summary'")
     private String summary;
+
+    @OneToMany(mappedBy = "link", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Article> articles = new ArrayList<>();
 
     @CreationTimestamp
     private Timestamp regDate;

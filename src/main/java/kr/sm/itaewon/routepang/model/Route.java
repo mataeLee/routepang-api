@@ -7,10 +7,12 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.ManyToAny;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -28,13 +30,6 @@ public class Route{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private long routeId;
-
-    /**
-     *  루트 소유자
-     */
-    @Column(name= "customer_id")
-    @ColumnDefault("0")
-    private long customerId;
 
     /**
      *  루트 타입 (폴더, 루트)
@@ -58,17 +53,6 @@ public class Route{
     private String boundary;
 
     /**
-     *  생성일
-     */
-    @CreationTimestamp
-    private Timestamp regDate;
-
-    /**
-     *  수정일
-     */
-    @UpdateTimestamp
-    private Timestamp updateDate;
-    /**
      *  여행 시작 날짜
      */
     @Column(name="start_date")
@@ -86,6 +70,28 @@ public class Route{
     @Column(name="parent_id")
     @ColumnDefault("0")
     private long parentId;
+
+    /**
+     *  작성자
+     */
+    @ManyToOne(targetEntity = Customer.class, fetch = FetchType.LAZY)
+    @JoinColumn(name="customer_id")
+    private Customer customer;
+
+    @ManyToMany(mappedBy = "route")
+    private List<Product> products = new ArrayList<>();
+
+    /**
+     *  생성일
+     */
+    @CreationTimestamp
+    private Timestamp regDate;
+
+    /**
+     *  수정일
+     */
+    @UpdateTimestamp
+    private Timestamp updateDate;
 
     /**
      *  클라이언트에게 전송하기 위한 json 만들기 용도

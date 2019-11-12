@@ -35,6 +35,9 @@ public class ArticleController {
     @Autowired
     private LinkService linkService;
 
+    @Autowired
+    private CustomerService customerService;
+
     @RequestMapping("/**")
     public ResponseEntity<Void> badRequest(){
         return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
@@ -62,7 +65,9 @@ public class ArticleController {
     @GetMapping("/articles/{customerId}/customers")
     public ResponseEntity<List<Article>> getArticleByCustomerId(@PathVariable long customerId){
 
-        List<Article> list = articleService.findByCustomerId(customerId);
+        Customer customer = customerService.findByCustomerId(customerId);
+
+        List<Article> list = articleService.findByCustomer(customer);
 
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
@@ -71,9 +76,11 @@ public class ArticleController {
      * @param placeId : String
      */
     @GetMapping("/articles/{placeId}/places")
-    public ResponseEntity<List<Article>> getArticleByPlaceId(@PathVariable String placeId){
+    public ResponseEntity<List<Article>> getArticlesByPlaceId(@PathVariable String placeId){
 
-        List<Article> list = articleService.findByPlaceId(placeId);
+        Location location = locationService.findByPlaceId(placeId);
+
+        List<Article> list = articleService.findByLocation(location);
 
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
@@ -86,7 +93,7 @@ public class ArticleController {
         if(locationModel == null){
             locationService.save(location);
             //TODO article, location 연관관계 체크
-            article.setLocationId(location.getLocationId());
+            article.setLocation(location);
         }
 
         // link 유무 검사

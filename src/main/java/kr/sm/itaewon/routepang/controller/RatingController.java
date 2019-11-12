@@ -29,9 +29,11 @@ public class RatingController {
 
     @PostMapping("/rate/location")
     public ResponseEntity<Void> postRatingLocation(@RequestBody Rating rating){
-        Location location = locationService.findByLocationId(rating.getLocationId());
-        Customer customer = customerService.findByCustomerId(rating.getCustomerId());
-        Rating rate = ratingService.findByCustomerIdAndLocationId(rating.getCustomerId(), rating.getLocationId());
+        long locationId = rating.getLocation().getLocationId();
+        long customerId = rating.getCustomer().getCustomerId();
+        Location location = locationService.findByLocationId(locationId);
+        Customer customer = customerService.findByCustomerId(customerId);
+        Rating rate = ratingService.findByCustomerAndLocation(customer, location);
 
         if(location == null || customer == null || rate != null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

@@ -17,6 +17,8 @@ import org.locationtech.jts.geom.Point;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -68,6 +70,14 @@ public class Location{
     @ColumnDefault("0")
     private LocationCategory category;
 
+    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Article> articles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Rating> ratings = new ArrayList<>();
+
+    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Product> products = new ArrayList<>();
     /**
      *  평점
      */
@@ -100,6 +110,7 @@ public class Location{
 
     @CreationTimestamp
     private Timestamp regDate;
+
     @UpdateTimestamp
     private Timestamp updateDate;
 }

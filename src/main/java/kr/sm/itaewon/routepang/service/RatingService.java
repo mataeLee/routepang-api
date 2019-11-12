@@ -18,8 +18,8 @@ public class RatingService {
     @Autowired
     private ArticleService articleService;
 
-    public List<Rating> findByLocationId(long locationId) {
-        List<Rating> list = ratingRepository.findByLocationId(locationId);
+    public List<Rating> findByLocationId(Location location) {
+        List<Rating> list = ratingRepository.findByLocation(location);
         return list;
     }
 
@@ -31,8 +31,8 @@ public class RatingService {
     }
 
     public Location insertRating(Location location){
-        List<Rating> ratingList = this.findByLocationId(location.getLocationId());
-        int count = articleService.countArticlesByLocationId(location.getLocationId());
+        List<Rating> ratingList = this.findByLocationId(location);
+        int count = articleService.countArticlesByLocation(location);
         Rating rating = calcRatingAndUsedTime(ratingList);
 
         location.setRatingCount(ratingList.size());
@@ -64,12 +64,13 @@ public class RatingService {
         return calcedRating;
     }
 
-    public Rating findByCustomerIdAndLocationId(long customerId, long locationId){
-        Rating rating = ratingRepository.findByCustomerIdAndLocationId(customerId, locationId);
-        return rating;
+    public void postRating(Rating rating) {
+
+        ratingRepository.save(rating);
     }
 
-    public void postRating(Rating rating) {
-        ratingRepository.save(rating);
+    public Rating findByCustomerAndLocation(Customer customer, Location location) {
+        Rating rating = ratingRepository.findByCustomerAndLocation(customer, location);
+        return rating;
     }
 }

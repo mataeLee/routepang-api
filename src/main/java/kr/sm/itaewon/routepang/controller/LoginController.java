@@ -29,7 +29,7 @@ public class LoginController {
     private CustomerService customerService;
 
     @PostMapping("/signin")
-    public ResponseEntity<Customer> signin(@RequestBody Customer customer){
+    public ResponseEntity<String> signin(@RequestBody Customer customer){
         String account = customer.getAccount();
         String password = customer.getPassword();
 
@@ -41,11 +41,11 @@ public class LoginController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
-        // 인증
-        Customer loginMember = loginService.signin(customerModel, account, password);
+        // 인증 및 토큰 발행
+        String loginToken = loginService.signin(customerModel, account, password);
 
-        if(loginMember != null) {
-            return new ResponseEntity<>(loginMember, HttpStatus.OK);
+        if(loginToken != null) {
+            return new ResponseEntity<>(loginToken, HttpStatus.OK);
         }
         // 인증 실패 팝업
         else

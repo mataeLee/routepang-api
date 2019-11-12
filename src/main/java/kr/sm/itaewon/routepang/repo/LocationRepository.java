@@ -9,8 +9,8 @@ import java.util.List;
 
 public interface LocationRepository extends CrudRepository<Location, Long> {
 
-    @Query(value = "SELECT location_id, place_id FROM location", nativeQuery = true)
-    List<Location> findAllLocation();
+//    @Query(value = "SELECT location_id, place_id FROM location", nativeQuery = true)
+//    List<Location> findAllLocation();
 
     Location findByLocationId(long loacationId);
 

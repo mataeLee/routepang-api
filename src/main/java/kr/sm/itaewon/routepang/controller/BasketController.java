@@ -55,10 +55,7 @@ public class BasketController {
 //            basket.setRouteId(-1);
 //            basketRepository.save(basket);
 //            return new ResponseEntity<>(HttpStatus.CREATED);
-//
-//        }catch (Exception e){
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+
     }
 
     //TODO RouteController

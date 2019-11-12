@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.ManyToAny;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -28,14 +29,16 @@ public class Rating {
     /**
      *  평가지역
      */
-    @Column(name="location_id")
-    private long locationId;
+    @ManyToOne
+    @JoinColumn(name = "location_id")
+    private Location location;
 
     /**
-     *  평가자
+     *  작성자
      */
-    @Column(name="customer_id")
-    private long customerId;
+    @ManyToOne(targetEntity = Customer.class, fetch = FetchType.LAZY)
+    @JoinColumn(name="customer_id")
+    private Customer customer;
 
     /**
      *  평점

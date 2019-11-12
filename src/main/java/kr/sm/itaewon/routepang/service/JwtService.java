@@ -11,22 +11,22 @@ import java.io.UnsupportedEncodingException;
 
 @Service
 public class JwtService {
-    private static final String SALT =  "luvookSecret";
+    // SHA-256 이용을 위한 HMAC 생성 키
+    private static final String SALT =  "routepangSecret";
 
     public <T> String create(String key, T data, String subject){
-        System.out.println("create");
         String jwt = Jwts.builder()
                 .setHeaderParam("typ", "JWT")
                 .setHeaderParam("regDate", System.currentTimeMillis())
                 .setSubject(subject)
                 .claim(key, data)
+                //HS256 은 HMAC SHA-256
                 .signWith(SignatureAlgorithm.HS256, this.generateKey())
                 .compact();
         return jwt;
     }
 
     public boolean isUsable(String jwt) {
-        System.out.println("is usalbe");
         try{
             Jws<Claims> claims = Jwts.parser()
                     .setSigningKey(this.generateKey())
@@ -38,8 +38,8 @@ public class JwtService {
             return false;
         }
     }
+
     private byte[] generateKey(){
-        System.out.println("generateKey");
         byte[] key = null;
         try {
             key = SALT.getBytes("UTF-8");

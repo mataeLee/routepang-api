@@ -54,11 +54,19 @@ public class Customer {
     @Column(name="email")
     private String email;
 
-    /**
-     *  로그인 인증 jwt 토큰
-     */
-    @Column(name = "token")
-    private String token;
+    @OneToOne(mappedBy = "customer")
+    private Basket basket;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Rating> ratings = new ArrayList<>();
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Route> routes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Article> articles = new ArrayList<>();
+
+
     /**
      *  계정 정보 생성 날짜
      */
@@ -71,14 +79,17 @@ public class Customer {
     @UpdateTimestamp
     private Timestamp updateDate;
 
-    @ManyToOne(targetEntity = Role.class, fetch = FetchType.EAGER)
-    private Role role;
+    //TODO 권한
+//    @ManyToOne(targetEntity = Role.class, fetch = FetchType.EAGER)
+//    private Role role;
+//
+//    @Transient
+//    @JsonIgnore
+//    public List<Role> getRoles(){
+//        List<Role> roles = new ArrayList<>();
+//        roles.add(role);
+//        return roles;
+//    }
 
-    @Transient
-    @JsonIgnore
-    public List<Role> getRoles(){
-        List<Role> roles = new ArrayList<>();
-        roles.add(role);
-        return roles;
-    }
+
 }

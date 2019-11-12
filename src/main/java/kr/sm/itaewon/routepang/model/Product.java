@@ -7,6 +7,8 @@ import lombok.ToString;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -24,21 +26,25 @@ public class Product {
     private long productId;
 
     /**
-     *  사용자
+     *  연결된 사용자 장바구니
      */
-    @Column(name="customer_id")
-    private long customerId;
+    @ManyToOne
+    @JoinColumn(name = "basket_id")
+    private Basket basket;
 
     /**
-     *  위시리스트 item
+     *  location
      */
-    @Column(name="location_id")
-    private long locationId;
+    @ManyToOne
+    @JoinColumn(name = "location_id")
+    private Location location;
 
     /**
      *  어떤 루트에 포함된 item인지
      */
-    @Column(name="route_id")
+
+    @ManyToMany
+    @JoinColumn(name="route_id")
     @ColumnDefault("0")
-    private long routeId;
+    private List<Route> route = new ArrayList<>();
 }

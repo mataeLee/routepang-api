@@ -28,26 +28,6 @@ public class Article{
     private long articleId;
 
     /**
-     *  연결된 지역의 place id
-     */
-    @NotNull
-    @Column(name="place_id")
-    private String placeId;
-
-    /**
-     *  연결된 지역 id
-     */
-    @Column(name="location_id")
-    private long locationId;
-
-    /**
-     *  작성자
-     */
-    @NotNull
-    @Column(name="customer_id")
-    private long customerId;
-
-    /**
      *  업로드 이미지
      */
     @Column(name="image", length = 1000)
@@ -60,10 +40,25 @@ public class Article{
     private String summary;
 
     /**
+     *  연결된 지역 id
+     */
+    @ManyToOne(targetEntity = Location.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "location_id")
+    private Location location;
+
+    /**
+     *  작성자
+     */
+    @ManyToOne(targetEntity = Customer.class, fetch = FetchType.LAZY)
+    @JoinColumn(name="customer_id")
+    private Customer customer;
+
+    /**
      *  외부 블로그 및 sns 게시글 링크
      */
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(targetEntity = Link.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "link_id")
     private Link link;
 
     /**
@@ -72,6 +67,9 @@ public class Article{
     @CreationTimestamp
     private Timestamp regDate;
 
+    /**
+     *  수정일
+     */
     @UpdateTimestamp
     private Timestamp updateDate;
 

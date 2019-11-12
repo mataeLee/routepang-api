@@ -1,6 +1,7 @@
 package kr.sm.itaewon.routepang.service;
 
 import kr.sm.itaewon.routepang.model.Article;
+import kr.sm.itaewon.routepang.model.Customer;
 import kr.sm.itaewon.routepang.model.Link;
 import kr.sm.itaewon.routepang.model.Location;
 import kr.sm.itaewon.routepang.repo.ArticleRepository;
@@ -31,18 +32,13 @@ public class ArticleService {
         return article;
     }
 
-    public List<Article> findByCustomerId(long customerId) {
-        List<Article> list = articleRepository.findByCustomerId(customerId);
+    public List<Article> findByCustomer(Customer customer) {
+        List<Article> list = articleRepository.findByCustomer(customer);
         return list;
     }
 
-    public List<Article> findByPlaceId(String placeId) {
-        List<Article> list = articleRepository.findByPlaceId(placeId);
-        return list;
-    }
-
-    public int countArticlesByLocationId(long locationId) {
-        int count = articleRepository.countArticlesByLocationId(locationId);
+    public int countArticlesByLocation(Location location) {
+        int count = articleRepository.countArticlesByLocation(location);
 
         return count;
     }
@@ -56,6 +52,11 @@ public class ArticleService {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public List<Article> findByLocation(Location location) {
+        List<Article> list = articleRepository.findByLocation(location);
+        return list;
     }
 
 //    public void save(Article article, String linkUrl, Location location) {

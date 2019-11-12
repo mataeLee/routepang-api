@@ -38,11 +38,17 @@ public class ChatRoom {
      *
      */
     @Column(name="customer")
-   // @ManyToOne(targetEntity = Customer.class, fetch = FetchType.LAZY)
     private List<Customer> customers;
 
+    /**
+     *  작성일
+     */
     @CreationTimestamp
     private Timestamp regDate;
+
+    /**
+     *  수정일
+     */
     @UpdateTimestamp
     private Timestamp updateDate;
 }
