@@ -26,7 +26,7 @@ public class CustomerController {
         return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/customer/{customerId}")
+    @GetMapping("/{customerId}")
     public ResponseEntity<Customer> getCustomerById(@PathVariable long customerId){
 
         Customer customer = customerService.findByCustomerId(customerId);
@@ -35,7 +35,7 @@ public class CustomerController {
 
     }
 
-    @GetMapping("/customer/{account}/account")
+    @GetMapping("/{account}/account")
     public ResponseEntity<Customer> getCustomerByAccount(@RequestBody String account){
 
         Customer customer = customerService.findByAccount(account);

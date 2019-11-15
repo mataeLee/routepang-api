@@ -52,7 +52,7 @@ public class RouteController {
         return new ResponseEntity<>(locationList, HttpStatus.OK);
     }
 
-    @GetMapping("/routes/{customerId}")
+    @GetMapping("/{customerId}/customres")
     public ResponseEntity<List<Route>> getRoutes(@PathVariable long customerId){
 
         Customer customer = customerService.findByCustomerId(customerId);
@@ -63,7 +63,7 @@ public class RouteController {
     }
 
     @Transactional
-    @PostMapping("/routes/{customerId}")
+    @PostMapping("/{customerId}/customers")
     public ResponseEntity<Void> postRoute(@PathVariable long customerId, @RequestBody List<Route> routes){
 
         Customer customer = customerService.findByCustomerId(customerId);

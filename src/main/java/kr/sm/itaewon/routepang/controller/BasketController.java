@@ -25,7 +25,7 @@ public class BasketController {
         return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping("/baskets/{customerId}/add")
+    @PostMapping("/{customerId}/customers")
     public ResponseEntity<Void> addProducts(@RequestBody Location location, @PathVariable long customerId){
 
         return new ResponseEntity<>(HttpStatus.OK);

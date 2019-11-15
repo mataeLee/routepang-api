@@ -7,16 +7,18 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.redis.core.RedisHash;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
-@Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @ToString
+@NoArgsConstructor
+//@RedisHash("sesisons")
 public class Session {
 
     /**
@@ -27,8 +29,8 @@ public class Session {
     @Column(name="id")
     private long sessionId;
 
-    @NotNull
-    @Column(name = "customer_id")
+        @NotNull
+        @Column(name = "customer_id")
     private long customerId;
 
     @NotNull

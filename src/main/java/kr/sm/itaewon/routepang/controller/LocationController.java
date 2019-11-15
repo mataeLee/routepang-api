@@ -34,7 +34,7 @@ public class LocationController {
         return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/locations")
+    @GetMapping("/all")
     public ResponseEntity<List<Location>> getLocationAll(){
 
         List<Location> list = locationService.findAll();
@@ -44,7 +44,7 @@ public class LocationController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    @GetMapping("/location/{locationId}")
+    @GetMapping("/{locationId}")
     public ResponseEntity<Location> getLocationByLocationId(@PathVariable long locationId){
 
         Location location = locationService.findByLocationId(locationId);
@@ -54,7 +54,7 @@ public class LocationController {
         return new ResponseEntity<>(location, HttpStatus.OK);
     }
 
-    @GetMapping("/locations/{latitude}&&{longitude}&&{radius}/coordinates")
+    @GetMapping("/{latitude}&&{longitude}&&{radius}/coordinates")
     public ResponseEntity<List<Location>> getLocationByCoordinates(@PathVariable double longitude, @PathVariable double latitude, @PathVariable int radius){
 
         List<Location> list = locationService.findByCoordinates(longitude, latitude, radius);

@@ -27,7 +27,7 @@ public class RatingController {
     @Autowired
     private CustomerService customerService;
 
-    @PostMapping("/rate/location")
+    @PostMapping("/location")
     public ResponseEntity<Void> postRatingLocation(@RequestBody Rating rating){
         long locationId = rating.getLocation().getLocationId();
         long customerId = rating.getCustomer().getCustomerId();

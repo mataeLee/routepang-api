@@ -24,12 +24,9 @@ public class ProductController {
     private CustomerService customerService;
 
     @Autowired
-    private LocationService locationService;
-
-    @Autowired
     private ProductService productService;
 
-    @PostMapping("/add/{customerId}")
+    @PostMapping("/{customerId}/customers")
     public ResponseEntity<Void> addProduct(@RequestBody Product product, @PathVariable long customerId){
 
         Customer customer = customerService.findByCustomerId(customerId);
@@ -45,7 +42,7 @@ public class ProductController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/delete/{customerId}")
+    @DeleteMapping("/{customerId}/customers")
     public ResponseEntity<Void> deleteProduct(@RequestBody Product product, @PathVariable long customerId){
 
         productService.delete(product);

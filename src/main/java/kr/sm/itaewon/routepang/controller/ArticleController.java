@@ -43,7 +43,7 @@ public class ArticleController {
         return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/articles")
+    @GetMapping("/all")
     public ResponseEntity<List<Article>> getArticleAll(){
 
         List<Article> list = articleService.findAll();
@@ -51,7 +51,7 @@ public class ArticleController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    @GetMapping("/article/{articleId}")
+    @GetMapping("/{articleId}")
     public ResponseEntity<Article> getArticlesById(@PathVariable long articleId){
 
         Article article = articleService.findById(articleId);
@@ -62,7 +62,7 @@ public class ArticleController {
     /**
      * @param customerId : Long
      */
-    @GetMapping("/articles/{customerId}/customers")
+    @GetMapping("/{customerId}/customers")
     public ResponseEntity<List<Article>> getArticleByCustomerId(@PathVariable long customerId){
 
         Customer customer = customerService.findByCustomerId(customerId);
@@ -75,7 +75,7 @@ public class ArticleController {
     /**
      * @param placeId : String
      */
-    @GetMapping("/articles/{placeId}/places")
+    @GetMapping("/{placeId}/places")
     public ResponseEntity<List<Article>> getArticlesByPlaceId(@PathVariable String placeId){
 
         Location location = locationService.findByPlaceId(placeId);
@@ -85,10 +85,15 @@ public class ArticleController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    @PostMapping("/article/{linkUrl}/link")
-    public ResponseEntity<Void> postArticle(@RequestBody Article article, @PathVariable String linkUrl, @PathVariable Location location){
+    @PostMapping("/{linkUrl}/linkurl")
+    public ResponseEntity<Void> postArticle(@RequestBody Article article, @PathVariable String linkUrl, @RequestBody Location location){
         // place 유무 검사
-        Location locationModel = locationService.findByPlaceId(location.getPlaceId());
+        Location locationParam = location;
+
+        if(location == null){
+            locationParam = article.getLocation();
+        }
+        Location locationModel = locationService.findByPlaceId(locationParam.getPlaceId());
 
         if(locationModel == null){
             locationService.save(location);

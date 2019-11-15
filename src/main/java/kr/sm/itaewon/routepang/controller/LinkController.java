@@ -21,7 +21,7 @@ public class LinkController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping("/postLink")
+    @PostMapping("/")
     public ResponseEntity<Link> postLink(@RequestBody String linkUrl){
 
 

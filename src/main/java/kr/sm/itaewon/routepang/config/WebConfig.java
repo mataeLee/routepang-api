@@ -23,9 +23,9 @@ public class WebConfig implements WebMvcConfigurer {
         System.out.println(" add interceptor ");
         registry.addInterceptor(jwtInterceptor)
                 .addPathPatterns("/**")
-//                .excludePathPatterns("/article/**")
-//                .excludePathPatterns("/customer/**")
-                .excludePathPatterns("/login/**")
+                .excludePathPatterns("/logout")
+                .excludePathPatterns("/signup")
+                .excludePathPatterns("/login")
                 .excludePathPatterns("/error/**");
     }
 }

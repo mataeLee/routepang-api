@@ -27,7 +27,7 @@ public class Customer {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="customer_id")
+    @Column(name="id")
     private long customerId;
 
     /**
@@ -79,6 +79,8 @@ public class Customer {
     @UpdateTimestamp
     private Timestamp updateDate;
 
+    @Transient
+    private String token;
     //TODO 권한
 //    @ManyToOne(targetEntity = Role.class, fetch = FetchType.EAGER)
 //    private Role role;

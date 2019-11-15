@@ -1,25 +1,15 @@
 package kr.sm.itaewon.routepang.controller;
 
-import io.jsonwebtoken.JwtBuilder;
 import kr.sm.itaewon.routepang.model.Customer;
-import kr.sm.itaewon.routepang.model.Role;
-import kr.sm.itaewon.routepang.model.Session;
-import kr.sm.itaewon.routepang.repo.CustomerRepository;
-import kr.sm.itaewon.routepang.repo.RoleRepository;
 import kr.sm.itaewon.routepang.service.CustomerService;
-import kr.sm.itaewon.routepang.service.JwtService;
 import kr.sm.itaewon.routepang.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 @RestController
-@RequestMapping("/login")
+//@RequestMapping("/login")
 public class LoginController {
 
     @Autowired
@@ -28,8 +18,8 @@ public class LoginController {
     @Autowired
     private CustomerService customerService;
 
-    @PostMapping("/signin")
-    public ResponseEntity<String> signin(@RequestBody Customer customer){
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody Customer customer){
         String account = customer.getAccount();
         String password = customer.getPassword();
 
@@ -38,7 +28,7 @@ public class LoginController {
 
         if(customer == null){
             // 회원가입 팝업
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("인증 실패, 아이디와 비밀번호를 확인허세요.",HttpStatus.BAD_REQUEST);
         }
 
         // 인증 및 토큰 발행
@@ -49,25 +39,28 @@ public class LoginController {
         }
         // 인증 실패 팝업
         else
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>("인증 실패, 아이디와 비밀번호를 확인허세요.",HttpStatus.UNAUTHORIZED);
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<Customer> signup(@RequestBody Customer customerParam){
+    public ResponseEntity<String> signup(@RequestBody Customer customerParam){
 
         Customer customerModel = loginService.signup(customerParam);
 
+        if(customerModel == null){
+            return new ResponseEntity<>("중복된 아이디가 있습니다.", HttpStatus.BAD_REQUEST);
+        }
         customerService.save(customerModel);
 
-        return new ResponseEntity<>(customerModel, HttpStatus.CREATED);
+        return new ResponseEntity<>("회원가입 성공", HttpStatus.CREATED);
     }
 
 
     @DeleteMapping("/logout")
-    public ResponseEntity<Void> logout(@RequestBody Customer customer){
+    public ResponseEntity<String> logout(@RequestBody Customer customer){
 
         loginService.logout(customer);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("로그아웃 성공",HttpStatus.OK);
     }
 }

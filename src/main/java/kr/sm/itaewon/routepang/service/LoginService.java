@@ -24,7 +24,12 @@ public class LoginService {
 //
 //        //customer.setPassword(passwordEncoder.encode(customer.getPassword()));
 
-        Customer customerModel = new Customer();
+
+        Customer customerModel = customerService.findByAccount(customer.getAccount());
+        if(customerModel != null){
+            return null;
+        }
+        customerModel = new Customer();
         Role role = new Role();
         role.setRoleName("USER");
 
