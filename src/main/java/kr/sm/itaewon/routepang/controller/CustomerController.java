@@ -1,6 +1,7 @@
 package kr.sm.itaewon.routepang.controller;
 
 import kr.sm.itaewon.routepang.model.*;
+import kr.sm.itaewon.routepang.model.detail.CustomerPage;
 import kr.sm.itaewon.routepang.repo.*;
 import kr.sm.itaewon.routepang.service.CustomerService;
 import kr.sm.itaewon.routepang.util.LinkManager;
@@ -36,12 +37,17 @@ public class CustomerController {
     }
 
     @GetMapping("/{account}/account")
-    public ResponseEntity<Customer> getCustomerByAccount(@RequestBody String account){
+    public ResponseEntity<Customer> getCustomerByAccount(@PathVariable String account){
 
         Customer customer = customerService.findByAccount(account);
 
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 
+    @GetMapping("/{customerId}/customerpage")
+    public ResponseEntity<CustomerPage> getCustomerPageById(@PathVariable long customerId){
+        CustomerPage customerPage = customerService.getCustomerPageByCustomerId(customerId);
 
+        return new ResponseEntity<>(customerPage, HttpStatus.OK);
+    }
 }

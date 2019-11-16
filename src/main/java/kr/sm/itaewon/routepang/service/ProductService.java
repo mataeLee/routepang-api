@@ -1,6 +1,7 @@
 package kr.sm.itaewon.routepang.service;
 
 import kr.sm.itaewon.routepang.model.Basket;
+import kr.sm.itaewon.routepang.model.Customer;
 import kr.sm.itaewon.routepang.model.Location;
 import kr.sm.itaewon.routepang.model.Product;
 import kr.sm.itaewon.routepang.repo.ProductRepository;
@@ -48,5 +49,10 @@ public class ProductService {
             locationList.add(product.getLocation());
         }
         return locationList;
+    }
+
+    public int countByBasket(Basket basket) {
+        int count = productRepository.countByBasket(basket);
+        return count;
     }
 }

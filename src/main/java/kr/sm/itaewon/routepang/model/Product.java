@@ -1,5 +1,6 @@
 package kr.sm.itaewon.routepang.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,6 +29,7 @@ public class Product {
     /**
      *  연결된 사용자 장바구니
      */
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne
     @JoinColumn(name = "basket_id")
     private Basket basket;
@@ -35,6 +37,7 @@ public class Product {
     /**
      *  location
      */
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne
     @JoinColumn(name = "location_id")
     private Location location;

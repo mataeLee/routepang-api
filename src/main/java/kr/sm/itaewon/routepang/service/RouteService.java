@@ -47,4 +47,9 @@ public class RouteService {
 
         return productList;
     }
+
+    public int countByCustomer(Customer customer) {
+        int count = routeRepository.countByCustomer(customer);
+        return count;
+    }
 }

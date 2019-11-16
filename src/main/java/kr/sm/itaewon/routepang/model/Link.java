@@ -1,5 +1,6 @@
 package kr.sm.itaewon.routepang.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
@@ -59,6 +60,7 @@ public class Link {
     private String summary;
 
     @OneToMany(mappedBy = "link", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Article> articles = new ArrayList<>();
 
     @CreationTimestamp

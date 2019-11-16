@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.ManyToAny;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -17,43 +16,33 @@ import java.sql.Timestamp;
 @Setter
 @ToString
 @NoArgsConstructor
-public class Rating {
-
+public class Follow {
     /**
      *  id
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
-    private long ratingId;
+    private long followId;
 
     /**
-     *  평가지역
-     */
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne
-    @JoinColumn(name = "location_id")
-    private Location location;
-
-    /**
-     *  작성자
+     *  팔로우 대상
      */
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(targetEntity = Customer.class, fetch = FetchType.LAZY)
-    @JoinColumn(name="customer_id")
-    private Customer customer;
+    @JoinColumn(name="target")
+    private Customer target;
 
     /**
-     *  평점
+     *  팔로워
      */
-    @Column(name="rating")
-    private float rating;
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @ManyToOne(targetEntity = Customer.class, fetch = FetchType.LAZY)
+    @JoinColumn(name="follwer")
+    private Customer follower;
 
-    /**
-     *  소요 시간
-     */
-    @Column(name="used_time")
-    private double usedTime;
+    @Column(name="following")
+    private boolean follow;
 
     @CreationTimestamp
     private Timestamp regDate;

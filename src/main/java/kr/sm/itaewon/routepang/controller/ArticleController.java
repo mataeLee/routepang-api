@@ -78,6 +78,7 @@ public class ArticleController {
     @GetMapping("/{placeId}/places")
     public ResponseEntity<List<Article>> getArticlesByPlaceId(@PathVariable String placeId){
 
+        System.out.println("place id : " + placeId);
         Location location = locationService.findByPlaceId(placeId);
 
         List<Article> list = articleService.findByLocation(location);
@@ -85,28 +86,30 @@ public class ArticleController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    @PostMapping("/{linkUrl}/linkurl")
-    public ResponseEntity<Void> postArticle(@RequestBody Article article, @PathVariable String linkUrl, @RequestBody Location location){
+    @PostMapping("/")
+    public ResponseEntity<Void> postArticle(@RequestBody Article article){
         // place 유무 검사
-        Location locationParam = location;
+        Location locationParam = article.getLocation();
 
-        if(location == null){
-            locationParam = article.getLocation();
-        }
         Location locationModel = locationService.findByPlaceId(locationParam.getPlaceId());
 
         if(locationModel == null){
-            locationService.save(location);
-            //TODO article, location 연관관계 체크
-            article.setLocation(location);
+            locationService.save(locationParam);
         }
+        else
+            article.setLocation(locationModel);
 
         // link 유무 검사
-        Link link = linkService.findByLinkUrl(linkUrl);
-        if(link == null){
-            link = linkService.save(linkUrl);
+        Link link = article.getLink();
+
+        Link linkModel = linkService.findByLinkUrl(link.getLinkUrl());
+
+        if(linkModel == null){
+            linkService.save(link);
             article.setLink(link);
         }
+        else
+            article.setLink(linkModel);
 
         articleService.save(article);
 

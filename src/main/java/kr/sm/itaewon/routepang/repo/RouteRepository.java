@@ -19,4 +19,6 @@ public interface RouteRepository extends CrudRepository<Route, Long> {
     Integer deleteAllByCustomer(Customer customer);
 
     Route findByRouteId(long routeId);
+
+    int countByCustomer(Customer customer);
 }

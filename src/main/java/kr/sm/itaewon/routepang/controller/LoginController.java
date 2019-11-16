@@ -52,6 +52,7 @@ public class LoginController {
         }
         customerService.save(customerModel);
 
+
         return new ResponseEntity<>("회원가입 성공", HttpStatus.CREATED);
     }
 

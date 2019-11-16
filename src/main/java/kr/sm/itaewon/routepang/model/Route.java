@@ -1,5 +1,6 @@
 package kr.sm.itaewon.routepang.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import kr.sm.itaewon.routepang.category.RouteCategory;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -74,10 +75,12 @@ public class Route{
     /**
      *  작성자
      */
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(targetEntity = Customer.class, fetch = FetchType.LAZY)
     @JoinColumn(name="customer_id")
     private Customer customer;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToMany(mappedBy = "route")
     private List<Product> products = new ArrayList<>();
 

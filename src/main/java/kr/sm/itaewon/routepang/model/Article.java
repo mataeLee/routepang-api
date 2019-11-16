@@ -42,6 +42,7 @@ public class Article{
     /**
      *  연결된 지역 id
      */
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(targetEntity = Location.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
     private Location location;
@@ -49,6 +50,7 @@ public class Article{
     /**
      *  작성자
      */
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(targetEntity = Customer.class, fetch = FetchType.LAZY)
     @JoinColumn(name="customer_id")
     private Customer customer;
