@@ -55,6 +55,7 @@ public class Customer {
     private String email;
 
     @OneToOne(mappedBy = "customer")
+    @JsonIgnore
     private Basket basket;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)

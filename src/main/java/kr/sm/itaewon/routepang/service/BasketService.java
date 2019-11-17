@@ -19,9 +19,13 @@ public class BasketService {
 
     public Basket crateBasket(Customer customer) {
         Basket basket = new Basket();
+        customer.setBasket(basket);
         basket.setCustomer(customer);
         basketRepository.save(basket);
 
         return basket;
+    }
+
+    public void save(Customer customerModel) {
     }
 }

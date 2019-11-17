@@ -29,14 +29,16 @@ public class Session {
     @Column(name="id")
     private long sessionId;
 
-        @NotNull
-        @Column(name = "customer_id")
+    @NotNull
+    @Column(name = "customer_id")
     private long customerId;
 
     @NotNull
     @Column(name = "login_token")
     private String loginToken;
 
+    @Column(name = "push_token")
+    private String pushToken;
     /**
      *  생성일
      */

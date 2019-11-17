@@ -1,6 +1,7 @@
 package kr.sm.itaewon.routepang.controller;
 
 import kr.sm.itaewon.routepang.model.Customer;
+import kr.sm.itaewon.routepang.service.BasketService;
 import kr.sm.itaewon.routepang.service.CustomerService;
 import kr.sm.itaewon.routepang.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class LoginController {
     @Autowired
     private CustomerService customerService;
 
+    @Autowired
+    private BasketService basketService;
+
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody Customer customer){
         String account = customer.getAccount();
@@ -26,7 +30,7 @@ public class LoginController {
         // 계정 찾기
         Customer customerModel = customerService.findByAccount(account);
 
-        if(customer == null){
+        if(customerModel == null){
             // 회원가입 팝업
             return new ResponseEntity<>("인증 실패, 아이디와 비밀번호를 확인허세요.",HttpStatus.BAD_REQUEST);
         }
@@ -51,7 +55,7 @@ public class LoginController {
             return new ResponseEntity<>("중복된 아이디가 있습니다.", HttpStatus.BAD_REQUEST);
         }
         customerService.save(customerModel);
-
+        basketService.crateBasket(customerModel);
 
         return new ResponseEntity<>("회원가입 성공", HttpStatus.CREATED);
     }

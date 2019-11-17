@@ -32,7 +32,7 @@ public class Basket {
     /**
      *  사용자
      */
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="customer_id")
     private Customer customer;
 
@@ -54,6 +54,4 @@ public class Basket {
      */
     @UpdateTimestamp
     private Timestamp updateDate;
-//    @OneToMany
-//    private List<Product> products;
 }

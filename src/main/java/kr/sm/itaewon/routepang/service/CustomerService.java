@@ -35,7 +35,6 @@ public class CustomerService {
         return customer;
     }
 
-
     public Customer findByAccount(String account) {
         Customer customer = customerRepository.findByAccount(account);
         return customer;
