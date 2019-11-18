@@ -26,5 +26,5 @@ public interface LocationRepository extends CrudRepository<Location, Long> {
 //    List<Location> findByLiteral(double longitude, double latitude);
 
    // @Query(value = "SELECT * FROM location WHERE place_id LIKE ? ", nativeQuery = true)
-    List<Location> findByPlaceIdLike(String placeId);
+    Location findByPlaceIdLike(String placeId);
 }

@@ -52,7 +52,7 @@ public class RouteController {
         return new ResponseEntity<>(locationList, HttpStatus.OK);
     }
 
-    @GetMapping("/{customerId}/customres")
+    @GetMapping("/{customerId}/customers")
     public ResponseEntity<List<Route>> getRoutes(@PathVariable long customerId){
 
         Customer customer = customerService.findByCustomerId(customerId);

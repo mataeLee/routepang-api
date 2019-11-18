@@ -38,7 +38,7 @@ public class RatingController {
         if(location == null){
             location = locationService.create(rating.getLocation());
         }
-        
+
         Rating rate = ratingService.findByCustomerAndLocation(customer, location);
 
         if(customer == null || rate != null)

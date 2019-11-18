@@ -67,6 +67,7 @@ public class ProductController {
 
         Route route = routeService.findByRouteId(routeId);
         product.getRoute().add(route);
+
         productService.put(product);
         return new ResponseEntity<>(HttpStatus.OK);
     }

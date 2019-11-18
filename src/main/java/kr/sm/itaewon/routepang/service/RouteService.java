@@ -36,6 +36,7 @@ public class RouteService {
         Integer result = routeRepository.deleteAllByCustomer(customer);
 
         for(Route route: list){
+            route.setCustomer(customer);
             routeRepository.save(route);
         }
     }

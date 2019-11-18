@@ -49,9 +49,9 @@ public class LocationService {
     }
 
     public Location findByPlaceIdLike(String placeId) {
-        List<Location> location = locationRepository.findByPlaceIdLike(placeId);
+        Location location = locationRepository.findByPlaceIdLike(placeId);
 
-        return location.get(0);
+        return location;
     }
 
     public boolean save(Location location) {
