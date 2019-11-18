@@ -1,9 +1,6 @@
 package kr.sm.itaewon.routepang.service;
 
-import kr.sm.itaewon.routepang.model.Basket;
-import kr.sm.itaewon.routepang.model.Customer;
-import kr.sm.itaewon.routepang.model.Location;
-import kr.sm.itaewon.routepang.model.Product;
+import kr.sm.itaewon.routepang.model.*;
 import kr.sm.itaewon.routepang.repo.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,5 +51,14 @@ public class ProductService {
     public int countByBasket(Basket basket) {
         int count = productRepository.countByBasket(basket);
         return count;
+    }
+
+    public void put(Product product) {
+        productRepository.save(product);
+    }
+
+    public List<Product> findAllByRouteId(Route route) {
+        List<Product> productList = productRepository.findAllByRoute(route);
+        return productList;
     }
 }

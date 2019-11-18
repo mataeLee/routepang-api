@@ -19,9 +19,11 @@ public class CustomerPage {
 
     private String email;
 
-    private int follwerCount;
+    private int followerCount;
 
     private int followingCount;
+
+    private int articleCount;
 
     private int routeCount;
 

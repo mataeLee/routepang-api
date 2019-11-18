@@ -19,4 +19,6 @@ public interface ArticleRepository extends CrudRepository<Article, Long> {
     List<Article> findByLocation(Location location);
 
     List<Article> findByCustomer(Customer customer);
+
+    int countArticlesByCustomer(Customer customer);
 }

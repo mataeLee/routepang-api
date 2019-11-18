@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.CollectionId;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -54,6 +53,12 @@ public class Customer {
     @Column(name="email")
     private String email;
 
+    /**
+     *  푸시 알람 토큰
+     */
+    @Column(name = "push_token")
+    private String pushToken;
+
     @OneToOne(mappedBy = "customer")
     @JsonIgnore
     private Basket basket;
@@ -90,8 +95,6 @@ public class Customer {
     @UpdateTimestamp
     private Timestamp updateDate;
 
-    @Transient
-    private String token;
     //TODO 권한
 //    @ManyToOne(targetEntity = Role.class, fetch = FetchType.EAGER)
 //    private Role role;

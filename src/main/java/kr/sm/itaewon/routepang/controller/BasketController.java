@@ -5,6 +5,7 @@ import kr.sm.itaewon.routepang.model.Customer;
 import kr.sm.itaewon.routepang.model.Location;
 import kr.sm.itaewon.routepang.model.Route;
 import kr.sm.itaewon.routepang.service.BasketService;
+import kr.sm.itaewon.routepang.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,15 +21,25 @@ public class BasketController {
     @Autowired
     private BasketService basketService;
 
+    @Autowired
+    private CustomerService customerService;
+
     @RequestMapping("/**")
     public ResponseEntity<Void> badRequest(){
         return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping("/{customerId}/customers")
-    public ResponseEntity<Void> addProducts(@RequestBody Location location, @PathVariable long customerId){
+    @GetMapping("/{customerId}/customers")
+    private ResponseEntity<Basket> getBasketByCustomerId(@PathVariable long customerId){
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        Customer customer = customerService.findByCustomerId(customerId);
+        Basket basket = basketService.findByCustomer(customer);
+        return new ResponseEntity<>(basket,HttpStatus.OK);
+    }
+//    @PostMapping("/{customerId}/customers")
+//    public ResponseEntity<Void> addProducts(@RequestBody Location location, @PathVariable long customerId) {
+//
+//        return new ResponseEntity<>(HttpStatus.OK);
 //        try{
 //            if(location == null){
 //                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -55,8 +66,7 @@ public class BasketController {
 //            basket.setRouteId(-1);
 //            basketRepository.save(basket);
 //            return new ResponseEntity<>(HttpStatus.CREATED);
-
-    }
+//    }
 
     //TODO RouteController
 //    @GetMapping("/getLocationListByBasket/customerId={customerId}")

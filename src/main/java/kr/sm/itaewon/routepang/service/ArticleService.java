@@ -59,6 +59,11 @@ public class ArticleService {
         return list;
     }
 
+    public int countArticlesByCustomer(Customer customer) {
+        int count = articleRepository.countArticlesByCustomer(customer);
+        return count;
+    }
+
 //    public void save(Article article, String linkUrl, Location location) {
 //
 //        articleRepository.save(article);

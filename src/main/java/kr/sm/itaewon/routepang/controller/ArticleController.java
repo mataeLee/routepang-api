@@ -79,7 +79,7 @@ public class ArticleController {
     public ResponseEntity<List<Article>> getArticlesByPlaceId(@PathVariable String placeId){
 
         System.out.println("place id : " + placeId);
-        Location location = locationService.findByPlaceId(placeId);
+        Location location = locationService.findByPlaceIdLike(placeId);
 
         List<Article> list = articleService.findByLocation(location);
 
@@ -91,13 +91,12 @@ public class ArticleController {
         // place 유무 검사
         Location locationParam = article.getLocation();
 
-        Location locationModel = locationService.findByPlaceId(locationParam.getPlaceId());
+        Location locationModel = locationService.findByPlaceIdLike(locationParam.getPlaceId());
 
         if(locationModel == null){
-            locationService.save(locationParam);
+            locationModel = locationService.create(locationParam);
         }
-        else
-            article.setLocation(locationModel);
+        article.setLocation(locationModel);
 
         // link 유무 검사
         Link link = article.getLink();

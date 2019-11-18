@@ -48,10 +48,10 @@ public class LocationService {
         return list;
     }
 
-    public Location findByPlaceId(String placeId) {
-        Location location = locationRepository.findByPlaceId(placeId);
+    public Location findByPlaceIdLike(String placeId) {
+        List<Location> location = locationRepository.findByPlaceIdLike(placeId);
 
-        return location;
+        return location.get(0);
     }
 
     public boolean save(Location location) {
@@ -64,6 +64,10 @@ public class LocationService {
         }
     }
 
+    public Location create(Location location) {
+        Location locationModel = locationRepository.save(location);
+        return locationModel;
+    }
 //    public boolean saveWithPlaceId(String placeId){
 //
 //        Location location = new Location();

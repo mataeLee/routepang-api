@@ -71,15 +71,15 @@ public class Location{
     @ColumnDefault("0")
     private LocationCategory category;
 
-    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Article> articles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Rating> ratings = new ArrayList<>();
 
-    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Product> products = new ArrayList<>();
     /**

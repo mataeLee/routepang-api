@@ -31,7 +31,7 @@ public class Rating {
      *  평가지역
      */
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne
+    @ManyToOne(targetEntity = Location.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
     private Location location;
 

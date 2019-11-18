@@ -30,7 +30,7 @@ public class Product {
      *  연결된 사용자 장바구니
      */
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne
+    @ManyToOne(targetEntity = Basket.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "basket_id")
     private Basket basket;
 
@@ -38,7 +38,7 @@ public class Product {
      *  location
      */
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne
+    @ManyToOne(targetEntity = Location.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "location_id")
     private Location location;
 
@@ -46,7 +46,7 @@ public class Product {
      *  어떤 루트에 포함된 item인지
      */
 
-    @ManyToMany
+    @ManyToMany( cascade = CascadeType.ALL)
     @JoinColumn(name="route_id")
     @ColumnDefault("0")
     private List<Route> route = new ArrayList<>();

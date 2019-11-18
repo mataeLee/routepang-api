@@ -25,5 +25,6 @@ public interface LocationRepository extends CrudRepository<Location, Long> {
 //    @Query(value = "SELECT DISTINCT * FROM location WHERE longitude between ?1 - 0.0056 AND ?1 + 0.0056 AND latitude between ?2 - 0.0049 AND ?2 + 0.0049", nativeQuery = true)
 //    List<Location> findByLiteral(double longitude, double latitude);
 
-    Location findByPlaceId(String placeId);
+   // @Query(value = "SELECT * FROM location WHERE place_id LIKE ? ", nativeQuery = true)
+    List<Location> findByPlaceIdLike(String placeId);
 }

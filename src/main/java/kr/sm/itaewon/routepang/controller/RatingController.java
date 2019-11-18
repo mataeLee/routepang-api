@@ -29,15 +29,22 @@ public class RatingController {
 
     @PostMapping("/location")
     public ResponseEntity<Void> postRatingLocation(@RequestBody Rating rating){
-        long locationId = rating.getLocation().getLocationId();
+        String placeId = rating.getLocation().getPlaceId();
         long customerId = rating.getCustomer().getCustomerId();
-        Location location = locationService.findByLocationId(locationId);
+        Location location = locationService.findByPlaceIdLike(placeId);
         Customer customer = customerService.findByCustomerId(customerId);
+
+        //등록되지 않은 로케이션 추가
+        if(location == null){
+            location = locationService.create(rating.getLocation());
+        }
+        
         Rating rate = ratingService.findByCustomerAndLocation(customer, location);
 
-        if(location == null || customer == null || rate != null)
+        if(customer == null || rate != null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
+        rating.setLocation(location);
         ratingService.postRating(rating);
 
         return new ResponseEntity<>(HttpStatus.CREATED);

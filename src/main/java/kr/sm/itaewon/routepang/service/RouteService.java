@@ -52,4 +52,9 @@ public class RouteService {
         int count = routeRepository.countByCustomer(customer);
         return count;
     }
+
+    public Route findByRouteId(long routeId) {
+        Route route = routeRepository.findByRouteId(routeId);
+        return route;
+    }
 }

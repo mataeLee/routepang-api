@@ -64,13 +64,14 @@ public class RouteController {
 
     @Transactional
     @PostMapping("/{customerId}/customers")
-    public ResponseEntity<Void> postRoute(@PathVariable long customerId, @RequestBody List<Route> routes){
+    public ResponseEntity<List<Route>> postRoute(@PathVariable long customerId, @RequestBody List<Route> routes){
 
         Customer customer = customerService.findByCustomerId(customerId);
 
         routeService.save(routes, customer);
 
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+        List<Route> routeList = routeService.findByCustomer(customer);
 
+        return new ResponseEntity<>(routeList, HttpStatus.OK);
+    }
 }

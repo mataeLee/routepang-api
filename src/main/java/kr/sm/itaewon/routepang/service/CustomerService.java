@@ -29,14 +29,19 @@ public class CustomerService {
     @Autowired
     private RouteService routeService;
 
+    @Autowired
+    private ArticleService articleService;
+
 
     public Customer findByCustomerId(long customerId) {
         Customer customer = customerRepository.findByCustomerId(customerId);
+        customer.setPassword("");
         return customer;
     }
 
     public Customer findByAccount(String account) {
         Customer customer = customerRepository.findByAccount(account);
+        customer.setPassword("");
         return customer;
     }
 
@@ -54,7 +59,9 @@ public class CustomerService {
         customerPage.setEmail(customer.getEmail());
         customerPage.setReference(customer.getReference());
         customerPage.setFollowingCount(followService.getFollowingCount(customer));
-        customerPage.setFollwerCount(followService.getFollowerCount(customer));
+        customerPage.setFollowerCount(followService.getFollowerCount(customer));
+
+        customerPage.setArticleCount(articleService.countArticlesByCustomer(customer));
 
         Basket basket = basketService.findByCustomer(customer);
         customerPage.setProductCount(productService.countByBasket(basket));

@@ -1,17 +1,13 @@
 package kr.sm.itaewon.routepang.controller;
 
-import kr.sm.itaewon.routepang.model.Basket;
-import kr.sm.itaewon.routepang.model.Customer;
-import kr.sm.itaewon.routepang.model.Location;
-import kr.sm.itaewon.routepang.model.Product;
-import kr.sm.itaewon.routepang.service.BasketService;
-import kr.sm.itaewon.routepang.service.CustomerService;
-import kr.sm.itaewon.routepang.service.LocationService;
-import kr.sm.itaewon.routepang.service.ProductService;
+import kr.sm.itaewon.routepang.model.*;
+import kr.sm.itaewon.routepang.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/product")
@@ -26,6 +22,24 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private LocationService locationService;
+
+    @Autowired
+    private RouteService routeService;
+
+    @GetMapping("/{routeId}/routes")
+    public ResponseEntity<List<Location>> getLocationByRouteId(@PathVariable long routeId){
+
+        Route route = routeService.findByRouteId(routeId);
+
+        List<Product> productList = productService.findAllByRouteId(route);
+
+        List<Location> locationList = productService.findLocationByProducts(productList);
+
+        return new ResponseEntity<>(locationList,HttpStatus.OK);
+
+    }
     @PostMapping("/{customerId}/customers")
     public ResponseEntity<Void> addProduct(@RequestBody Product product, @PathVariable long customerId){
 
@@ -37,9 +51,30 @@ public class ProductController {
             basket = basketService.crateBasket(customer);
         }
 
+        String placeId = product.getLocation().getPlaceId();
+        Location location = locationService.findByPlaceIdLike(placeId);
+        if(location == null){
+            location = locationService.create(product.getLocation());
+            product.setLocation(location);
+        }
+
         productService.save(product, basket);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+    @PutMapping("/{routeId}/routes")
+    public ResponseEntity<String> putProductInRoute(@PathVariable long routeId, @RequestBody Product product){
+
+        Route route = routeService.findByRouteId(routeId);
+        product.getRoute().add(route);
+        productService.put(product);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping("/lists")
+    public ResponseEntity<String> putProductListInRoute(@RequestBody List<Route> routes, @RequestBody List<Product> products){
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{customerId}/customers")
@@ -49,4 +84,5 @@ public class ProductController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 }
