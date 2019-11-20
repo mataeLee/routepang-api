@@ -14,5 +14,7 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 
     int countByBasket(Basket basket);
 
-    List<Product> findAllByRoute(Route route);
+    //List<Product> findAllByRoute(Route route);
+
+    List<Product> findAllByRouteId(long routeId);
 }

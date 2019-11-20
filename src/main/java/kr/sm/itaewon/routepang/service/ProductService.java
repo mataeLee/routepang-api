@@ -58,7 +58,7 @@ public class ProductService {
     }
 
     public List<Product> findAllByRouteId(Route route) {
-        List<Product> productList = productRepository.findAllByRoute(route);
+        List<Product> productList = productRepository.findAllByRouteId(route.getRouteId());
         return productList;
     }
 }

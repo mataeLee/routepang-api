@@ -19,6 +19,9 @@ public class RouteService {
     @Autowired
     private RouteRepository routeRepository;
 
+    @Autowired
+    private ProductService productService;
+
     private RouteManager routeManager = new RouteManager();
 
     public List<Route> findByCustomer(Customer customer) {
@@ -44,7 +47,7 @@ public class RouteService {
     public List<Product> findProductsByRouteId(long routeId) {
         Route route = routeRepository.findByRouteId(routeId);
 
-        List<Product> productList = route.getProducts();
+        List<Product> productList = productService.findAllByRouteId(route);
 
         return productList;
     }

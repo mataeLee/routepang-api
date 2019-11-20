@@ -1,11 +1,10 @@
 package kr.sm.itaewon.routepang.controller;
 
-import kr.sm.itaewon.routepang.model.Basket;
-import kr.sm.itaewon.routepang.model.Customer;
-import kr.sm.itaewon.routepang.model.Location;
-import kr.sm.itaewon.routepang.model.Route;
+import kr.sm.itaewon.routepang.model.*;
 import kr.sm.itaewon.routepang.service.BasketService;
 import kr.sm.itaewon.routepang.service.CustomerService;
+import kr.sm.itaewon.routepang.service.ProductService;
+import kr.sm.itaewon.routepang.service.RatingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +23,27 @@ public class BasketController {
     @Autowired
     private CustomerService customerService;
 
+    @Autowired
+    private ProductService productService;
+
+    @Autowired
+    private RatingService ratingService;
+
     @RequestMapping("/**")
     public ResponseEntity<Void> badRequest(){
         return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+    }
+
+    @GetMapping("/products/{customerId}/customers")
+    private ResponseEntity<List<Product>> getProductsByCustomerId(@PathVariable long customerId){
+
+        Customer customer = customerService.findByCustomerId(customerId);
+        Basket basket = basketService.findByCustomer(customer);
+        List<Product> productList = productService.findByBasket(basket);
+        List<Location> locationList = productService.findLocationByProducts(productList);
+        ratingService.insertRating(locationList);
+        basket.setProducts(productList);
+        return new ResponseEntity<>(productList,HttpStatus.OK);
     }
 
     @GetMapping("/{customerId}/customers")

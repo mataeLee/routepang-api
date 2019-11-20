@@ -80,10 +80,6 @@ public class Route{
     @JoinColumn(name="customer_id")
     private Customer customer;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToMany(mappedBy = "route")
-    private List<Product> products = new ArrayList<>();
-
     /**
      *  생성일
      */

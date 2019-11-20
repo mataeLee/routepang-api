@@ -28,6 +28,9 @@ public class ProductController {
     @Autowired
     private RouteService routeService;
 
+    @Autowired
+    private RatingService ratingService;
+
     @GetMapping("/{routeId}/routes")
     public ResponseEntity<List<Location>> getLocationByRouteId(@PathVariable long routeId){
 
@@ -36,6 +39,7 @@ public class ProductController {
         List<Product> productList = productService.findAllByRouteId(route);
 
         List<Location> locationList = productService.findLocationByProducts(productList);
+        locationList = ratingService.insertRating(locationList);
 
         return new ResponseEntity<>(locationList,HttpStatus.OK);
 
@@ -58,6 +62,7 @@ public class ProductController {
             product.setLocation(location);
         }
 
+        product.setLocation(location);
         productService.save(product, basket);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -66,8 +71,16 @@ public class ProductController {
     public ResponseEntity<String> putProductInRoute(@PathVariable long routeId, @RequestBody Product product){
 
         Route route = routeService.findByRouteId(routeId);
-        product.getRoute().add(route);
+        //product.getRoute().add(route);
+        product.setRouteId(route.getRouteId());
 
+        String placeId = product.getLocation().getPlaceId();
+        Location location = locationService.findByPlaceIdLike(placeId);
+        if(location == null){
+            location = locationService.create(product.getLocation());
+            product.setLocation(location);
+        }
+        product.setLocation(location);
         productService.put(product);
         return new ResponseEntity<>(HttpStatus.OK);
     }

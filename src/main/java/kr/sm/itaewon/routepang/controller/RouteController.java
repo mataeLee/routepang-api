@@ -43,13 +43,13 @@ public class RouteController {
 
 
     @GetMapping("/locations/{routeId}/routes")
-    public ResponseEntity<List<Location>> getLocationListByRouteId(@PathVariable long routeId){
+    public ResponseEntity<List<Product>> getLocationListByRouteId(@PathVariable long routeId){
 
         List<Product> productList =  routeService.findProductsByRouteId(routeId);
 
-        List<Location> locationList = productService.findLocationByProducts(productList);
+//        List<Location> locationList = productService.findLocationByProducts(productList);
 
-        return new ResponseEntity<>(locationList, HttpStatus.OK);
+        return new ResponseEntity<>(productList, HttpStatus.OK);
     }
 
     @GetMapping("/{customerId}/customers")

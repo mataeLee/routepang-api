@@ -1,5 +1,6 @@
 package kr.sm.itaewon.routepang.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,13 +33,14 @@ public class Product {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(targetEntity = Basket.class, cascade = CascadeType.ALL)
     @JoinColumn(name = "basket_id")
+    @JsonIgnore
     private Basket basket;
 
     /**
      *  location
      */
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne(targetEntity = Location.class, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = Location.class)
     @JoinColumn(name = "location_id")
     private Location location;
 
@@ -46,8 +48,9 @@ public class Product {
      *  어떤 루트에 포함된 item인지
      */
 
-    @ManyToMany( cascade = CascadeType.ALL)
-    @JoinColumn(name="route_id")
+    //@ManyToMany( cascade = CascadeType.ALL)
+    //@JoinColumn(name="route_id")
+    @Column(name = "route_id")
     @ColumnDefault("0")
-    private List<Route> route = new ArrayList<>();
+    private long routeId;
 }
