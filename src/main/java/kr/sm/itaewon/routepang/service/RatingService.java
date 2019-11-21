@@ -73,4 +73,9 @@ public class RatingService {
         Rating rating = ratingRepository.findByCustomerAndLocation(customer, location);
         return rating;
     }
+
+    public int countRatingsByLocation(Location location) {
+        int count = ratingRepository.countByLocation(location);
+        return count;
+    }
 }

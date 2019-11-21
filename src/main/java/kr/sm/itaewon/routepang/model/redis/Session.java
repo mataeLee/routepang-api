@@ -1,4 +1,4 @@
-package kr.sm.itaewon.routepang.model;
+package kr.sm.itaewon.routepang.model.redis;
 
 import com.sun.istack.NotNull;
 import lombok.*;

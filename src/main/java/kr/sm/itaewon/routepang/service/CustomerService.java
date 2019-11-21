@@ -1,15 +1,11 @@
 package kr.sm.itaewon.routepang.service;
 
 import kr.sm.itaewon.routepang.model.Basket;
-import kr.sm.itaewon.routepang.model.Session;
 import kr.sm.itaewon.routepang.model.detail.CustomerPage;
-import org.mindrot.jbcrypt.BCrypt;
 import kr.sm.itaewon.routepang.model.Customer;
-import kr.sm.itaewon.routepang.model.Role;
 import kr.sm.itaewon.routepang.repo.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.swing.BakedArrayList;
 
 @Service
 public class CustomerService {

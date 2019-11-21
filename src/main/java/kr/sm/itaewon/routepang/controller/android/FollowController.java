@@ -1,4 +1,4 @@
-package kr.sm.itaewon.routepang.controller;
+package kr.sm.itaewon.routepang.controller.android;
 
 import kr.sm.itaewon.routepang.model.Follow;
 import kr.sm.itaewon.routepang.service.FollowService;
@@ -17,7 +17,6 @@ public class FollowController {
     public ResponseEntity<String> follow(@RequestBody Follow follow){
 
         Follow followModel = followService.follow(follow);
-
 
         return new ResponseEntity<>("팔로우 : " + followModel.isFollow(), HttpStatus.OK);
     }

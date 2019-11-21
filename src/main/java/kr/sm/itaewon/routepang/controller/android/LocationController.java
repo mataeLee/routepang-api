@@ -1,10 +1,11 @@
-package kr.sm.itaewon.routepang.controller;
+package kr.sm.itaewon.routepang.controller.android;
 
 import kr.sm.itaewon.routepang.model.Location;
 import kr.sm.itaewon.routepang.model.Rating;
 import kr.sm.itaewon.routepang.repo.ArticleRepository;
 import kr.sm.itaewon.routepang.repo.LocationRepository;
 import kr.sm.itaewon.routepang.repo.RatingRepository;
+import kr.sm.itaewon.routepang.service.ArticleService;
 import kr.sm.itaewon.routepang.service.LocationService;
 import kr.sm.itaewon.routepang.service.RatingService;
 import kr.sm.itaewon.routepang.util.DegreeCalcurator;
@@ -26,9 +27,6 @@ public class LocationController {
     @Autowired
     private LocationService locationService;
 
-    @Autowired
-    private RatingService ratingService;
-
     @RequestMapping("/**")
     public ResponseEntity<Void> badRequest(){
         return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
@@ -39,7 +37,7 @@ public class LocationController {
 
         List<Location> list = locationService.findAll();
 
-        list = ratingService.insertRating(list);
+        list = locationService.insertCountList(list);
 
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
@@ -49,7 +47,7 @@ public class LocationController {
 
         Location location = locationService.findByLocationId(locationId);
 
-        location = ratingService.insertRating(location);
+        location = locationService.insertCount(location);
 
         return new ResponseEntity<>(location, HttpStatus.OK);
     }
@@ -58,8 +56,7 @@ public class LocationController {
     public ResponseEntity<List<Location>> getLocationByCoordinates(@PathVariable double longitude, @PathVariable double latitude, @PathVariable int radius){
 
         List<Location> list = locationService.findByCoordinates(longitude, latitude, radius);
-
-        list = ratingService.insertRating(list);
+        list = locationService.insertCountList(list);
 
         return new ResponseEntity<>(list, HttpStatus.OK);
     }

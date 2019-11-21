@@ -1,4 +1,4 @@
-package kr.sm.itaewon.routepang.controller;
+package kr.sm.itaewon.routepang.controller.android;
 
 import kr.sm.itaewon.routepang.model.Customer;
 import kr.sm.itaewon.routepang.model.Location;

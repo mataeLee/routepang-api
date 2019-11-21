@@ -1,10 +1,7 @@
-package kr.sm.itaewon.routepang.controller;
+package kr.sm.itaewon.routepang.controller.android;
 
 import kr.sm.itaewon.routepang.model.*;
-import kr.sm.itaewon.routepang.service.BasketService;
-import kr.sm.itaewon.routepang.service.CustomerService;
-import kr.sm.itaewon.routepang.service.ProductService;
-import kr.sm.itaewon.routepang.service.RouteService;
+import kr.sm.itaewon.routepang.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +26,9 @@ public class RouteController {
     @Autowired
     private CustomerService customerService;
 
+    @Autowired
+    private LocationService locationService;
+
     @GetMapping("/locations/{customerId}/customers")
     public ResponseEntity<List<Location>> getLocationListByProduct(@PathVariable long customerId){
 
@@ -37,6 +37,7 @@ public class RouteController {
         Basket basket = basketService.findByCustomer(customer);
 
         List<Location> locationList = productService.findLocationByBasket(basket);
+        locationList = locationService.insertCountList(locationList);
 
         return new ResponseEntity<>(locationList, HttpStatus.OK);
     }
@@ -46,8 +47,9 @@ public class RouteController {
     public ResponseEntity<List<Product>> getLocationListByRouteId(@PathVariable long routeId){
 
         List<Product> productList =  routeService.findProductsByRouteId(routeId);
+        List<Location> locationList = productService.findLocationByProducts(productList);
 
-//        List<Location> locationList = productService.findLocationByProducts(productList);
+        locationList = locationService.insertCountList(locationList);
 
         return new ResponseEntity<>(productList, HttpStatus.OK);
     }

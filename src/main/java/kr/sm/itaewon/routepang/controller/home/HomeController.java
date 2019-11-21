@@ -1,4 +1,4 @@
-package kr.sm.itaewon.routepang.controller;
+package kr.sm.itaewon.routepang.controller.home;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -57,7 +57,12 @@ public class Customer {
      *  푸시 알람 토큰
      */
     @Column(name = "push_token")
+    @JsonIgnore
     private String pushToken;
+
+    @Column(name = "login_token")
+    @JsonIgnore
+    private String loginToken;
 
     @OneToOne(mappedBy = "customer")
     @JsonIgnore

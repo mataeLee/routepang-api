@@ -12,4 +12,6 @@ public interface RatingRepository extends CrudRepository<Rating, Long> {
     List<Rating> findByLocation(Location location);
 
     Rating findByCustomerAndLocation(Customer customer, Location location);
+
+    int countByLocation(Location location);
 }

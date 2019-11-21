@@ -2,8 +2,7 @@ package kr.sm.itaewon.routepang.service;
 
 import kr.sm.itaewon.routepang.model.Customer;
 import kr.sm.itaewon.routepang.model.Role;
-import kr.sm.itaewon.routepang.model.Session;
-import kr.sm.itaewon.routepang.repo.CustomerRepository;
+import kr.sm.itaewon.routepang.model.redis.Session;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,7 +42,6 @@ public class LoginService {
     }
 
     public String signin(Customer customer, String account, String password){
-        System.out.println("signin processing");
 
         // 로그인 id 검증
         if(!customer.getAccount().equals(account))
@@ -55,6 +53,8 @@ public class LoginService {
             // 로그인 토큰 발행
             String token = jwtService.create("customer", customer, "user");
 
+            customer.setLoginToken(token);
+            customerService.save(customer);
             // 세션 발행
             Session session = new Session();
             session.setLoginToken(token);
@@ -68,6 +68,9 @@ public class LoginService {
 
     //TODO logout 요청 처리(세션 관리)
     public void logout(Customer customer) {
+        customer.setLoginToken("");
+        customer.setPushToken("");
+        customerService.save(customer);
         //sessionService.delete(customer);
     }
 

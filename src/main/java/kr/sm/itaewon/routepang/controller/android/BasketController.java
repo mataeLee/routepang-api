@@ -1,10 +1,7 @@
-package kr.sm.itaewon.routepang.controller;
+package kr.sm.itaewon.routepang.controller.android;
 
 import kr.sm.itaewon.routepang.model.*;
-import kr.sm.itaewon.routepang.service.BasketService;
-import kr.sm.itaewon.routepang.service.CustomerService;
-import kr.sm.itaewon.routepang.service.ProductService;
-import kr.sm.itaewon.routepang.service.RatingService;
+import kr.sm.itaewon.routepang.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +26,9 @@ public class BasketController {
     @Autowired
     private RatingService ratingService;
 
+    @Autowired
+    private LocationService locationService;
+
     @RequestMapping("/**")
     public ResponseEntity<Void> badRequest(){
         return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
@@ -41,8 +41,8 @@ public class BasketController {
         Basket basket = basketService.findByCustomer(customer);
         List<Product> productList = productService.findByBasket(basket);
         List<Location> locationList = productService.findLocationByProducts(productList);
-        ratingService.insertRating(locationList);
-        basket.setProducts(productList);
+        locationList = locationService.insertCountList(locationList);
+//        basket.setProducts(productList);
         return new ResponseEntity<>(productList,HttpStatus.OK);
     }
 

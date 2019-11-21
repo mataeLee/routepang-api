@@ -1,4 +1,4 @@
-package kr.sm.itaewon.routepang.controller;
+package kr.sm.itaewon.routepang.controller.android;
 
 import kr.sm.itaewon.routepang.model.*;
 import kr.sm.itaewon.routepang.service.*;
@@ -31,6 +31,8 @@ public class ProductController {
     @Autowired
     private RatingService ratingService;
 
+    @Autowired
+    private ArticleService articleService;
     @GetMapping("/{routeId}/routes")
     public ResponseEntity<List<Location>> getLocationByRouteId(@PathVariable long routeId){
 
@@ -39,7 +41,7 @@ public class ProductController {
         List<Product> productList = productService.findAllByRouteId(route);
 
         List<Location> locationList = productService.findLocationByProducts(productList);
-        locationList = ratingService.insertRating(locationList);
+        locationList = locationService.insertCountList(locationList);
 
         return new ResponseEntity<>(locationList,HttpStatus.OK);
 
@@ -59,6 +61,7 @@ public class ProductController {
         Location location = locationService.findByPlaceIdLike(placeId);
         if(location == null){
             location = locationService.create(product.getLocation());
+            locationService.insertCount(location);
             product.setLocation(location);
         }
 

@@ -19,6 +19,12 @@ public class LocationService {
     @Autowired
     private LocationRepository locationRepository;
 
+    @Autowired
+    private ArticleService articleService;
+
+    @Autowired
+    private RatingService ratingService;
+
     private GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
 
     private DegreeCalcurator degreeCalcurator = new DegreeCalcurator();
@@ -75,4 +81,20 @@ public class LocationService {
 //
 //    }
 
+    public List<Location> insertCountList(List<Location> locationList){
+        for(Location location: locationList){
+            int articleCount = articleService.countArticlesByLocation(location);
+            int ratingCount = ratingService.countRatingsByLocation(location);
+            location.setArticleCount(articleCount);
+            location.setRatingCount(ratingCount);
+        }
+        return locationList;
+    }
+    public Location insertCount(Location location){
+        int articleCount = articleService.countArticlesByLocation(location);
+        int ratingCount = ratingService.countRatingsByLocation(location);
+        location.setArticleCount(articleCount);
+        location.setRatingCount(ratingCount);
+        return location;
+    }
 }
