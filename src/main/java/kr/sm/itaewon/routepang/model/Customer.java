@@ -64,7 +64,7 @@ public class Customer {
     @JsonIgnore
     private String loginToken;
 
-    @OneToOne(mappedBy = "customer")
+    @OneToOne(mappedBy = "customer",cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Basket basket;
 

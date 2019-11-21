@@ -13,7 +13,6 @@ import java.util.concurrent.ExecutionException;
 public class FCMService {
 
     public void send(final NotificationRequest notificationRequest) throws InterruptedException, ExecutionException {
-        System.out.println("to fcm send message");
         Message message = Message.builder()
                 .setToken(notificationRequest.getToken())
                 .setWebpushConfig(WebpushConfig.builder().putHeader("ttl", "300")

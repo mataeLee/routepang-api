@@ -37,7 +37,8 @@ public class CustomerService {
 
     public Customer findByAccount(String account) {
         Customer customer = customerRepository.findByAccount(account);
-        customer.setPassword("");
+        if(customer !=null)
+            customer.setPassword("");
         return customer;
     }
 

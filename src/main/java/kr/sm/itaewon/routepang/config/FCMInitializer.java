@@ -19,7 +19,9 @@ public class FCMInitializer {
 
     @PostConstruct
     public void initialize() {
+        System.out.println("fcm initialize!");
         try {
+            System.out.println("경로 : " + GoogleCredentials.fromStream(new ClassPathResource(FIREBASE_CONFIG_PATH).getInputStream()));
             FirebaseOptions options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(new ClassPathResource(FIREBASE_CONFIG_PATH).getInputStream())).build();
             if (FirebaseApp.getApps().isEmpty()) {

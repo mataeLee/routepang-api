@@ -23,8 +23,9 @@ public class ChatService {
     }
 
     public ChatMessage build(ChatMessage chatMessage) {
-//        SplittableRandom random = new SplittableRandom();
-//        String key =  String.valueOf(random.nextInt(1, 1_000_000_000));
+
+        long senderId = chatMessage.getSenderId();
+        long receiverId = chatMessage.getReceiverId();
 
         String key = "" + chatMessage.getReceiverId() + chatMessage.getSenderId();
         ChatMessage chatMessageModel = ChatMessage.builder()

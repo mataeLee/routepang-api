@@ -1,5 +1,6 @@
 package kr.sm.itaewon.routepang.controller.android;
 
+import com.google.firebase.messaging.FirebaseMessagingException;
 import kr.sm.itaewon.routepang.model.redis.ChatMessage;
 import kr.sm.itaewon.routepang.service.ChatService;
 import kr.sm.itaewon.routepang.service.CustomerService;
@@ -27,11 +28,11 @@ public class ChatController {
     private CustomerService customerService;
 
     @PostMapping("/send")
-    public ResponseEntity<Void> sendMessage(@RequestBody ChatMessage chatMessage) throws ExecutionException, InterruptedException {
+    public ResponseEntity<Void> sendMessage(@RequestBody ChatMessage chatMessage) throws ExecutionException, InterruptedException, FirebaseMessagingException {
         ChatMessage chatMessageModel = chatService.build(chatMessage);
 
-        //TODO push
-        notificationService.pushMessage(chatMessage);
+        //push
+        notificationService.pushMessage(chatMessageModel);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
