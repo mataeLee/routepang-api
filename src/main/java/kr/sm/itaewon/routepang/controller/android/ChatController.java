@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -40,7 +41,11 @@ public class ChatController {
     public ResponseEntity<List<ChatMessage>> readMessage(@RequestHeader long receiverId, @RequestHeader long senderId){
 
         //TODO key mapping
-        String key = receiverId+"";
+        long ids [] = new long[2];
+        ids[0] = senderId;
+        ids[1] = receiverId;
+        Arrays.sort(ids);
+        String key = "" + ids[0] + ids[1];
         List<ChatMessage> chatMessageList = chatService.findAllByKey(key);
         return new ResponseEntity<>(chatMessageList, HttpStatus.OK);
     }

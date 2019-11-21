@@ -38,6 +38,7 @@ public class LocationController {
         List<Location> list = locationService.findAll();
 
         list = locationService.insertCountList(list);
+        list = locationService.insertLocationListImages(list);
 
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
@@ -48,7 +49,7 @@ public class LocationController {
         Location location = locationService.findByLocationId(locationId);
 
         location = locationService.insertCount(location);
-
+        location = locationService.insertLocationImages(location);
         return new ResponseEntity<>(location, HttpStatus.OK);
     }
 
@@ -57,7 +58,7 @@ public class LocationController {
 
         List<Location> list = locationService.findByCoordinates(longitude, latitude, radius);
         list = locationService.insertCountList(list);
-
+        list = locationService.insertLocationListImages(list);
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 

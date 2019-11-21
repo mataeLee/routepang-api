@@ -7,6 +7,7 @@ import org.springframework.data.redis.core.ListOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -27,7 +28,11 @@ public class ChatService {
         long senderId = chatMessage.getSenderId();
         long receiverId = chatMessage.getReceiverId();
 
-        String key = "" + chatMessage.getReceiverId() + chatMessage.getSenderId();
+        long ids [] = new long[2];
+        ids[0] = senderId;
+        ids[1] = receiverId;
+        Arrays.sort(ids);
+        String key = "" + ids[0] + ids[1];
         ChatMessage chatMessageModel = ChatMessage.builder()
                 .id(key)
                 .senderId(chatMessage.getSenderId())

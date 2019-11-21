@@ -64,6 +64,15 @@ public class ArticleService {
         return count;
     }
 
+    public List<String> findImagesByLocation(Location location) {
+        List<Article> articles = articleRepository.findArticleImagesByLocation(location);
+        List<String> images = new ArrayList<>();
+        for(Article article : articles){
+            images.add(article.getImage());
+        }
+        return images;
+    }
+
 //    public void save(Article article, String linkUrl, Location location) {
 //
 //        articleRepository.save(article);

@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface ArticleRepository extends CrudRepository<Article, Long> {
 
-    @Query(value = "SELECT COUNT(*) FROM article where ?1 = location_id;", nativeQuery = true)
+    //@Query(value = "SELECT COUNT(*) FROM article where ?1 = location_id;", nativeQuery = true)
     int countArticlesByLocation(Location location);
 
     Article findByArticleId(long articleId);
@@ -21,4 +21,7 @@ public interface ArticleRepository extends CrudRepository<Article, Long> {
     List<Article> findByCustomer(Customer customer);
 
     int countArticlesByCustomer(Customer customer);
+
+    @Query(value = "SELECT * FROM article WHERE location_id = ? ORDER BY reg_date DESC LIMIT 10;",nativeQuery = true)
+    List<Article> findArticleImagesByLocation(Location location);
 }

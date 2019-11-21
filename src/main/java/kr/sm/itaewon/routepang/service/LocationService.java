@@ -83,18 +83,30 @@ public class LocationService {
 
     public List<Location> insertCountList(List<Location> locationList){
         for(Location location: locationList){
-            int articleCount = articleService.countArticlesByLocation(location);
-            int ratingCount = ratingService.countRatingsByLocation(location);
-            location.setArticleCount(articleCount);
-            location.setRatingCount(ratingCount);
+            location = insertCount(location);
         }
         return locationList;
     }
+
     public Location insertCount(Location location){
         int articleCount = articleService.countArticlesByLocation(location);
         int ratingCount = ratingService.countRatingsByLocation(location);
         location.setArticleCount(articleCount);
         location.setRatingCount(ratingCount);
+        return location;
+    }
+
+    public List<Location> insertLocationListImages(List<Location> locationList){
+        for(Location location: locationList){
+            location = insertLocationImages(location);
+        }
+
+        return locationList;
+    }
+
+    public Location insertLocationImages(Location location){
+        List<String> images = articleService.findImagesByLocation(location);
+        location.setImages(images);
         return location;
     }
 }

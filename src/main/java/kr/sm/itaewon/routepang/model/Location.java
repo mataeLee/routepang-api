@@ -82,6 +82,13 @@ public class Location{
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Product> products = new ArrayList<>();
+
+    /**
+     *  대표이미지
+     */
+    @Transient
+    private List<String> images = new ArrayList<>();
+
     /**
      *  평점
      */
