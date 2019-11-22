@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -71,17 +73,17 @@ public class Location{
     @ColumnDefault("0")
     private LocationCategory category;
 
-    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<Article> articles = new ArrayList<>();
-
-    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<Rating> ratings = new ArrayList<>();
-
-    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<Product> products = new ArrayList<>();
+//    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
+//    @JsonIgnore
+//    private List<Article> articles = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
+//    @JsonIgnore
+//    private List<Rating> ratings = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
+//    @JsonIgnore
+//    private List<Product> products = new ArrayList<>();
 
     /**
      *  대표이미지
@@ -124,4 +126,10 @@ public class Location{
 
     @UpdateTimestamp
     private Timestamp updateDate;
+
+    @Override
+    public String toString() {
+        return ToStringBuilder
+                .reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+    }
 }

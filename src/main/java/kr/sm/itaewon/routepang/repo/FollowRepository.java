@@ -19,4 +19,8 @@ public interface FollowRepository extends CrudRepository<Follow, Long> {
     List<Follow> findByFollowerAndFollow(Customer customer, boolean follow);
 
     List<Follow> findByTargetAndFollow(Customer customer, boolean follow);
+
+    int countByTargetAndFollow(Customer customer, boolean follow);
+
+    int countByFollowerAndFollow(Customer customer, boolean follow);
 }

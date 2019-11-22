@@ -29,11 +29,11 @@ public class FeedService {
 
     // Article DB에 저장할 때 같이
     public void saveArticle(Article article){
+        article.setLocation(null);
         GsonBuilder gb = new GsonBuilder();
         gb.serializeSpecialFloatingPointValues();
         Gson gson = gb.create();
         String jsonData = gson.toJson(article);
-
         //  System.out.println(jsonData);
 
         long userId = article.getCustomer().getCustomerId();
@@ -41,7 +41,7 @@ public class FeedService {
         newsfeed.setCustomerId(userId);
         newsfeed.setEventId(article.getArticleId());
         newsfeed.setEventType(FeedCategory.ARTICLE);
-        //  newsfeed.setJsonData(jsonData);
+        newsfeed.setJsonData(jsonData);
 
         List<Customer> followers = followService.findFollowerByCustomer(article.getCustomer());
         // System.out.println(followers.toString());
@@ -54,6 +54,7 @@ public class FeedService {
 
     // TODO Route + Route안의 Product객체들
     public void saveRoute(Route route){
+
         GsonBuilder gb = new GsonBuilder();
         gb.serializeSpecialFloatingPointValues();
         Gson gson = gb.create();
@@ -64,7 +65,7 @@ public class FeedService {
         newsfeed.setCustomerId(userId);
         newsfeed.setEventId(route.getRouteId());
         newsfeed.setEventType(FeedCategory.ROUTE);
-//        newsfeed.setJsonData(jsonData);
+        newsfeed.setJsonData(jsonData);
 
         List<Customer> followers = followService.findFollowerByCustomer(route.getCustomer());
         System.out.println(followers.toString());

@@ -37,14 +37,14 @@ public class FollowService {
         }
     }
 
-    public int getFollowingCount(Customer following){
-        int count = followRepository.countByTarget(following);
+    public int getFollowingCount(Customer customer){
+        int count = followRepository.countByFollowerAndFollow(customer, true);
 
         return count;
     }
 
     public int getFollowerCount(Customer customer){
-        int count = followRepository.countByFollower(customer);
+        int count = followRepository.countByTargetAndFollow(customer,true);
 
         return count;
     }

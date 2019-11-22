@@ -2,6 +2,8 @@ package kr.sm.itaewon.routepang.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -59,9 +61,9 @@ public class Link {
     @ColumnDefault("'no summary'")
     private String summary;
 
-    @OneToMany(mappedBy = "link", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private List<Article> articles = new ArrayList<>();
+//    @OneToMany(mappedBy = "link", cascade = CascadeType.ALL, orphanRemoval = true)
+//    @JsonIgnore
+//    private List<Article> articles = new ArrayList<>();
 
     @CreationTimestamp
     private Timestamp regDate;
@@ -69,4 +71,9 @@ public class Link {
     @UpdateTimestamp
     private Timestamp updateDate;
 
+    @Override
+    public String toString() {
+        return ToStringBuilder
+                .reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
+    }
 }

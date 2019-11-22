@@ -17,5 +17,4 @@ public class Feed {
     private FeedCategory eventType;
 
     private String jsonData;
-
 }
