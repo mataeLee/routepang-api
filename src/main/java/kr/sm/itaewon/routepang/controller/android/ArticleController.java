@@ -8,10 +8,7 @@ import kr.sm.itaewon.routepang.repo.ArticleRepository;
 import kr.sm.itaewon.routepang.repo.BasketRepository;
 import kr.sm.itaewon.routepang.repo.CustomerRepository;
 import kr.sm.itaewon.routepang.repo.LinkRepository;
-import kr.sm.itaewon.routepang.service.ArticleService;
-import kr.sm.itaewon.routepang.service.CustomerService;
-import kr.sm.itaewon.routepang.service.LinkService;
-import kr.sm.itaewon.routepang.service.LocationService;
+import kr.sm.itaewon.routepang.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +34,9 @@ public class ArticleController {
 
     @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    private FeedService feedService;
 
     @RequestMapping("/**")
     public ResponseEntity<Void> badRequest(){
@@ -112,7 +112,8 @@ public class ArticleController {
 
         articleService.save(article);
 
+        feedService.saveArticle(article);
+
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
 }

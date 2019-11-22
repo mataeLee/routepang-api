@@ -42,6 +42,7 @@ public class BasketController {
         List<Product> productList = productService.findByBasket(basket);
         List<Location> locationList = productService.findLocationByProducts(productList);
         locationList = locationService.insertCountList(locationList);
+        locationList = locationService.insertLocationListImages(locationList);
 //        basket.setProducts(productList);
         return new ResponseEntity<>(productList,HttpStatus.OK);
     }

@@ -50,7 +50,7 @@ public class FollowService {
     }
 
     public List<Customer> findFollowerByCustomer(Customer customer) {
-        List<Follow> followerList = followRepository.findByFollowerAndFollow(customer, true);
+        List<Follow> followerList = followRepository.findByTargetAndFollow(customer, true);
         List<Customer> customerList = new ArrayList<>();
 
         for(Follow follow: followerList){
@@ -60,11 +60,11 @@ public class FollowService {
     }
 
     public List<Customer> findFollowingByCustomer(Customer customer) {
-        List<Follow> followingList = followRepository.findByTargetAndFollow(customer, true);
+        List<Follow> followingList = followRepository.findByFollowerAndFollow(customer, true);
         List<Customer> customerList = new ArrayList<>();
 
         for(Follow follow: followingList){
-            customerList.add(follow.getFollower());
+            customerList.add(follow.getTarget());
         }
         return customerList;
     }

@@ -29,7 +29,7 @@ public class Follow {
      *  팔로우 대상
      */
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne(targetEntity = Customer.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Customer.class, fetch = FetchType.EAGER)
     @JoinColumn(name="target")
     private Customer target;
 
@@ -37,7 +37,7 @@ public class Follow {
      *  팔로워
      */
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne(targetEntity = Customer.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Customer.class, fetch = FetchType.EAGER)
     @JoinColumn(name="follwer")
     private Customer follower;
 

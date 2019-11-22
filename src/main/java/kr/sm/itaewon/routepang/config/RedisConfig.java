@@ -1,6 +1,7 @@
 package kr.sm.itaewon.routepang.config;
 
 import kr.sm.itaewon.routepang.model.redis.ChatMessage;
+import kr.sm.itaewon.routepang.model.redis.Feed;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +10,8 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
 @EnableRedisRepositories
@@ -31,16 +34,37 @@ public class RedisConfig {
     public RedisConnectionFactory redisConnectionFactory() {
         return new LettuceConnectionFactory(redisHostName, redisPort);
     }
+
     @Bean
-    public RedisTemplate<String, ChatMessage> redisTemplate() {
-        RedisTemplate<String, ChatMessage> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(redisConnectionFactory());
-        redisTemplate.setEnableTransactionSupport(true);
-        return redisTemplate;
+    public RedisTemplate<String, ChatMessage> redisChatTemplate() {
+        RedisTemplate<String, ChatMessage> redisChatTemplate = new RedisTemplate<>();
+        redisChatTemplate.setConnectionFactory(redisConnectionFactory());
+        redisChatTemplate.setEnableTransactionSupport(true);
+//        redisChatTemplate.setKeySerializer(new StringRedisSerializer());
+//        redisChatTemplate.setValueSerializer(new Jackson2JsonRedisSerializer(Feed.class));
+        return redisChatTemplate;
     }
+
+    @Bean
+    public RedisTemplate<String, Feed> redisFeedTemplate() {
+        RedisTemplate<String, Feed> redisFeedTemplate = new RedisTemplate<>();
+        redisFeedTemplate.setConnectionFactory(redisConnectionFactory());
+        redisFeedTemplate.setEnableTransactionSupport(true);
+        redisFeedTemplate.setKeySerializer(new StringRedisSerializer());
+        redisFeedTemplate.setValueSerializer(new Jackson2JsonRedisSerializer(Feed.class));
+        return redisFeedTemplate;
+    }
+
+    @Bean
+    public ListOperations<String, Feed> feedListOperations() {
+        ListOperations<String, Feed> feedListOperations = redisFeedTemplate().opsForList();
+        return feedListOperations;
+    }
+
+
     @Bean
     public ListOperations<String, ChatMessage> messageListOperations() {
-        ListOperations<String, ChatMessage> messageListOperations = redisTemplate().opsForList();
+        ListOperations<String, ChatMessage> messageListOperations = redisChatTemplate().opsForList();
         return messageListOperations;
     }
 //    @Bean

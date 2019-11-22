@@ -92,7 +92,9 @@ public class RouteController {
     @Transactional
     @PutMapping("/{routeId}")
     public ResponseEntity<Route> putRoute(@PathVariable long routeId, @RequestBody Route routeParam){
+        Customer customer = customerService.findByCustomerId(routeParam.getCustomer().getCustomerId());
 
+        routeParam.setCustomer(customer);
         if(routeParam.getRouteId() == routeId)
             routeParam = routeService.save(routeParam);
 
