@@ -87,7 +87,9 @@ public class ProductController {
         Location location = locationService.findByPlaceIdLike(placeId);
         if(location == null){
             location = locationService.create(product.getLocation());
+            location = locationService.insertLocationImages(location);
             product.setLocation(location);
+
         }
         product.setLocation(location);
         product.setBasket(basket);

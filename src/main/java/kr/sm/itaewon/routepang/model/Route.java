@@ -97,4 +97,7 @@ public class Route{
      */
     @Transient
     private List<Route> routes;
+
+    @Transient
+    private List<Product> products;
 }

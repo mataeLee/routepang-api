@@ -94,6 +94,15 @@ public class RouteController {
     public ResponseEntity<Route> putRoute(@PathVariable long routeId, @RequestBody Route routeParam){
         Customer customer = customerService.findByCustomerId(routeParam.getCustomer().getCustomerId());
 
+        //List<Product> productList = productService.findAllByRouteId(routeParam);
+        //Basket basket = basketService.findByCustomer(routeParam.getCustomer());
+        for(Product product : routeParam.getProducts()){
+            Product productModel = new Product();
+            productModel.setRouteId(routeParam.getRouteId());
+            productModel.setLocation(product.getLocation());
+            productService.save(productModel);
+        }
+
         routeParam.setCustomer(customer);
         if(routeParam.getRouteId() == routeId)
             routeParam = routeService.save(routeParam);
@@ -108,8 +117,10 @@ public class RouteController {
 
         routeService.delete(route);
 
+        List<Product> products = routeService.findProductsByRouteId(routeId);
+        for(Product product: products){
+            productService.delete(product);
+        }
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-
 }
