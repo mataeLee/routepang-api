@@ -19,6 +19,10 @@ public class ProductService {
         productRepository.save(product);
     }
 
+    public void save(Product product) {
+        productRepository.save(product);
+    }
+
     public void delete(Product product) {
         productRepository.delete(product);
     }
@@ -53,9 +57,6 @@ public class ProductService {
         return count;
     }
 
-    public void put(Product product) {
-        productRepository.save(product);
-    }
 
     public List<Product> findAllByRouteId(Route route) {
         List<Product> productList = productRepository.findAllByRouteId(route.getRouteId());

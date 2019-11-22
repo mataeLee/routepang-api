@@ -6,6 +6,9 @@ import kr.sm.itaewon.routepang.repo.FollowRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class FollowService {
     @Autowired
@@ -46,4 +49,23 @@ public class FollowService {
         return count;
     }
 
+    public List<Customer> findFollowerByCustomer(Customer customer) {
+        List<Follow> followerList = followRepository.findByFollowerAndFollow(customer, true);
+        List<Customer> customerList = new ArrayList<>();
+
+        for(Follow follow: followerList){
+            customerList.add(follow.getFollower());
+        }
+        return customerList;
+    }
+
+    public List<Customer> findFollowingByCustomer(Customer customer) {
+        List<Follow> followingList = followRepository.findByTargetAndFollow(customer, true);
+        List<Customer> customerList = new ArrayList<>();
+
+        for(Follow follow: followingList){
+            customerList.add(follow.getFollower());
+        }
+        return customerList;
+    }
 }

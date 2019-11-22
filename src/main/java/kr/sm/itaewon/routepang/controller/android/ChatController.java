@@ -45,7 +45,7 @@ public class ChatController {
         ids[0] = senderId;
         ids[1] = receiverId;
         Arrays.sort(ids);
-        String key = "" + ids[0] + ids[1];
+        String key = "dm:" + ids[0] +":"+ ids[1];
         List<ChatMessage> chatMessageList = chatService.findAllByKey(key);
         return new ResponseEntity<>(chatMessageList, HttpStatus.OK);
     }

@@ -32,7 +32,7 @@ public class ChatService {
         ids[0] = senderId;
         ids[1] = receiverId;
         Arrays.sort(ids);
-        String key = "" + ids[0] + ids[1];
+        String key = "dm:" + ids[0] +":"+ ids[1];
         ChatMessage chatMessageModel = ChatMessage.builder()
                 .id(key)
                 .senderId(chatMessage.getSenderId())

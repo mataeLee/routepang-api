@@ -31,19 +31,19 @@ public class CustomerService {
 
     public Customer findByCustomerId(long customerId) {
         Customer customer = customerRepository.findByCustomerId(customerId);
-        customer.setPassword("");
+//        customer.setPassword("");
         return customer;
     }
 
     public Customer findByAccount(String account) {
         Customer customer = customerRepository.findByAccount(account);
-        if(customer !=null)
-            customer.setPassword("");
+//        if(customer !=null)
+//            customer.setPassword("");
         return customer;
     }
 
     public void save(Customer customer){
-        basketService.crateBasket(customer);
+        //basketService.crateBasket(customer);
         customerRepository.save(customer);
     }
 

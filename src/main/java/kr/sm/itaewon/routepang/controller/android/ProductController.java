@@ -46,6 +46,7 @@ public class ProductController {
         return new ResponseEntity<>(locationList,HttpStatus.OK);
 
     }
+
     @PostMapping("/{customerId}/customers")
     public ResponseEntity<Void> addProduct(@RequestBody Product product, @PathVariable long customerId){
 
@@ -70,10 +71,15 @@ public class ProductController {
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
     @PutMapping("/{routeId}/routes")
     public ResponseEntity<String> putProductInRoute(@PathVariable long routeId, @RequestBody Product product){
 
         Route route = routeService.findByRouteId(routeId);
+
+        Customer customer = route.getCustomer();
+
+        Basket basket = basketService.findByCustomer(customer);
         //product.getRoute().add(route);
         product.setRouteId(route.getRouteId());
 
@@ -84,7 +90,8 @@ public class ProductController {
             product.setLocation(location);
         }
         product.setLocation(location);
-        productService.put(product);
+        product.setBasket(basket);
+        productService.save(product);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

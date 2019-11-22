@@ -31,7 +31,7 @@ public class Product {
      *  연결된 사용자 장바구니
      */
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne(targetEntity = Basket.class, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = Basket.class)
     @JoinColumn(name = "basket_id")
     @JsonIgnore
     private Basket basket;

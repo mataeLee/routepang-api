@@ -46,7 +46,7 @@ public class Article{
      *  연결된 지역 id
      */
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne(targetEntity = Location.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = Location.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
     private Location location;
 
@@ -54,7 +54,7 @@ public class Article{
      *  작성자
      */
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne(targetEntity = Customer.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = Customer.class, fetch = FetchType.LAZY)
     @JoinColumn(name="customer_id")
     private Customer customer;
 
@@ -62,7 +62,7 @@ public class Article{
      *  외부 블로그 및 sns 게시글 링크
      */
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToOne(targetEntity = Link.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(targetEntity = Link.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "link_id")
     private Link link;
 

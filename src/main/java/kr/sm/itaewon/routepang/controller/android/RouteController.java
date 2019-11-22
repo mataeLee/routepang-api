@@ -44,7 +44,7 @@ public class RouteController {
 
 
     @GetMapping("/locations/{routeId}/routes")
-    public ResponseEntity<List<Product>> getLocationListByRouteId(@PathVariable long routeId){
+    public ResponseEntity<List<Product>> getProductListByRouteId(@PathVariable long routeId){
 
         List<Product> productList =  routeService.findProductsByRouteId(routeId);
         List<Location> locationList = productService.findLocationByProducts(productList);
@@ -65,15 +65,49 @@ public class RouteController {
     }
 
     @Transactional
-    @PostMapping("/{customerId}/customers")
-    public ResponseEntity<List<Route>> postRoute(@PathVariable long customerId, @RequestBody List<Route> routes){
+    @PostMapping("/list/{customerId}/customers")
+    public ResponseEntity<List<Route>> postRouteList(@PathVariable long customerId, @RequestBody List<Route> routes){
 
         Customer customer = customerService.findByCustomerId(customerId);
 
-        routeService.save(routes, customer);
+        routeService.saveList(routes, customer);
 
         List<Route> routeList = routeService.findByCustomer(customer);
 
         return new ResponseEntity<>(routeList, HttpStatus.OK);
     }
+
+    @Transactional
+    @PostMapping("/{customerId}/customers")
+    public ResponseEntity<Route> postRoute(@PathVariable long customerId, @RequestBody Route route){
+
+        Customer customer = customerService.findByCustomerId(customerId);
+
+        route.setCustomer(customer);
+        route = routeService.save(route);
+
+        return new ResponseEntity<>(route, HttpStatus.OK);
+    }
+
+    @Transactional
+    @PutMapping("/{routeId}")
+    public ResponseEntity<Route> putRoute(@PathVariable long routeId, @RequestBody Route routeParam){
+
+        if(routeParam.getRouteId() == routeId)
+            routeParam = routeService.save(routeParam);
+
+        return new ResponseEntity<>(routeParam, HttpStatus.OK);
+    }
+
+    @Transactional
+    @DeleteMapping("/{routeId}")
+    public ResponseEntity<String> deleteRoute(@PathVariable long routeId){
+        Route route = routeService.findByRouteId(routeId);
+
+        routeService.delete(route);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
 }

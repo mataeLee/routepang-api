@@ -32,7 +32,8 @@ public class RouteService {
         return list;
     }
 
-    public void save(List<Route> routes, Customer customer) {
+
+    public void saveList(List<Route> routes, Customer customer) {
         List<Route> list = routeManager.sortRoute(routes);
 
         // 중복 방지를 위해 기존 레코드 삭제 후 새로 삽입 - IO latency 증가 시 기존 레코드들 수정하는 방향으로 수정
@@ -60,5 +61,20 @@ public class RouteService {
     public Route findByRouteId(long routeId) {
         Route route = routeRepository.findByRouteId(routeId);
         return route;
+    }
+
+    public Route save(Route route) {
+        route = routeRepository.save(route);
+        return route;
+    }
+
+    public void delete(Route route) {
+        List<Product> productList = productService.findAllByRouteId(route);
+
+        for(Product product: productList){
+            productService.delete(product);
+        }
+        
+        routeRepository.delete(route);
     }
 }

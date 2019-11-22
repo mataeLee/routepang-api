@@ -56,11 +56,11 @@ public class Customer {
     /**
      *  푸시 알람 토큰
      */
-    @Column(name = "push_token")
+    @Column(name = "push_token", length = 2000)
     @JsonIgnore
     private String pushToken;
 
-    @Column(name = "login_token")
+    @Column(name = "login_token", length = 2000)
     @JsonIgnore
     private String loginToken;
 
@@ -111,6 +111,4 @@ public class Customer {
 //        roles.add(role);
 //        return roles;
 //    }
-
-
 }

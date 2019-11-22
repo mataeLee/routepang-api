@@ -31,7 +31,7 @@ public class NotificationService {
 
         NotificationRequest notificationRequest = NotificationRequest.builder()
                 .message(chatMessage.getContent())
-                .title("POST RECEIVED")
+                .title(receiver.getAccount()+"님의 메시지")
                 .token(receiver.getPushToken())
                 .build();
         fcmService.send(notificationRequest);

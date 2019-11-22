@@ -32,7 +32,7 @@ public class LoginController {
 
         if(customerModel == null){
             // 회원가입 팝업
-            return new ResponseEntity<>("인증 실패, 아이디와 비밀번호를 확인허세요.",HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("인증 실패, 아이디와 비밀번호를 확인허세요.", HttpStatus.BAD_REQUEST);
         }
 
         // 인증 및 토큰 발행
@@ -43,7 +43,7 @@ public class LoginController {
         }
         // 인증 실패 팝업
         else
-            return new ResponseEntity<>("인증 실패, 아이디와 비밀번호를 확인허세요.",HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>("인증 실패, 아이디와 비밀번호를 확인허세요.", HttpStatus.UNAUTHORIZED);
     }
 
     @PostMapping("/signup")
