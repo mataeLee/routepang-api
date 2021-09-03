@@ -10,9 +10,6 @@ import javax.annotation.Resource;
 @SpringBootApplication
 public class RoutepangServerApplication {
 
-    @Resource(name="redisTemplate")
-    private ListOperations<String, String> listOperations;
-
     public static void main(String[] args) {
 
         SpringApplication.run(RoutepangServerApplication.class, args);

@@ -35,9 +35,10 @@ targetCompatibility = 1.8
 
 
 dependencies {
-    compile 'org.springframework.boot:spring-boot-starter-thymeleaf:2.1.6.RELEASE'
-    compile 'org.springframework.boot:spring-boot-starter-web:2.1.6.RELEASE'
-    compile 'org.springframework.boot:spring-boot-starter-data-jpa:2.1.6.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testCompile 'org.springframework.boot:spring-boot-starter-test:2.1.6.RELEASE'
     //compile 'io.jsonwebtoken:jjwt-api:0.10.5'
     compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.7.0'
     compile group: 'org.mindrot', name: 'jbcrypt', version: '0.4'
@@ -71,7 +72,7 @@ dependencies {
     // https://mvnrepository.com/artifact/org.hibernate/hibernate-core
     compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.2.Final'
 
-    
+
 // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.8'
 // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations
@@ -85,8 +86,7 @@ dependencies {
     compile group: 'org.geolatte', name: 'geolatte-geom', version: '1.4.0'
 
     runtime 'org.postgresql:postgresql:42.2.5'
-    
-    testCompile 'org.springframework.boot:spring-boot-starter-test:2.1.6.RELEASE'
+
     testCompile 'org.mockito:mockito-all:1.9.5'
     testCompile "org.powermock:powermock-module-junit4:1.6.4"
     testCompile "org.powermock:powermock-module-junit4-rule:1.6.4"

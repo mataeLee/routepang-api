@@ -2,6 +2,7 @@ package kr.sm.itaewon.routepang.service;
 
 import kr.sm.itaewon.routepang.model.redis.ChatMessage;
 import kr.sm.itaewon.routepang.repo.ChatMessageRepository;
+import kr.sm.itaewon.routepang.util.KeyManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,8 @@ public class ChatService {
 
     @Autowired
     private ListOperations<String, ChatMessage> messageListOperations;
+
+    public KeyManager keyManager = new KeyManager();
 
     public void save(ChatMessage chatMessage) {
         chatMessageRepository.save(chatMessage);
