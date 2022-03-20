@@ -73,7 +73,6 @@ public class FeedService {
             listOperations.rightPush("feed:"+follower.getCustomerId(), newsfeed);
     }
 
-    // 성공?
     public List<Feed> getFeed(long userId){
         System.out.println(listOperations.index("feed:"+userId, 0));
 

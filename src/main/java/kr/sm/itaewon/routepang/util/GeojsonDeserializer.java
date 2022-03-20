@@ -62,6 +62,7 @@ public class GeojsonDeserializer<T> extends JsonDeserializer<Point> {
             return point;
             //return jsonMapper.fromJson(jp.readValueAsTree().toString(), type);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new JsonMappingException(e.getMessage(), jp.getCurrentLocation(), e.getCause());
         }
     }
