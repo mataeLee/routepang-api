@@ -4,4 +4,4 @@
 프로젝트 개요 : 여행계획, 여행준비에 필요한 정보들을 쉽고 빠르게 탐색 및 이용하고 사람들에게 공유할 수 있는 서비스.   
    
    
-[Document](https://parallel-cornucopia-5d2.notion.site/Routepang-5fdb4eabd78d413cbb8faa8d65f8ebef)   
+Documentation : [Notion](https://parallel-cornucopia-5d2.notion.site/Routepang-5fdb4eabd78d413cbb8faa8d65f8ebef)   
